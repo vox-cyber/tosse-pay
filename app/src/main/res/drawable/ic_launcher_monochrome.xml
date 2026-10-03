@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Simple mark for Android 13+ themed / monochrome launcher icon -->
+<!-- Tosse Pay themed / monochrome launcher icon for Android 13+ -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!-- Dynamic Toss Arc (trajectory) -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/white"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M27,72 C22,50 36,28 60,26 C69,25 76,28 81,33" />
+
+    <!-- Stylized 'T' Symbol -->
     <path
         android:fillColor="@color/white"
-        android:pathData="M31,24 L77,24 L77,36 L43,36 L43,48 L69,48 L69,60 L43,60 L43,84 L31,84 Z" />
+        android:pathData="M33,36 L75,36 C77.2,36 79,37.8 79,40 C79,42.2 77.2,44 75,44 L59,44 L59,75 C59,77.5 56.8,79.5 54,79.5 C51.2,79.5 49,77.5 49,75 L49,44 L33,44 C30.8,44 29,42.2 29,40 C29,37.8 30.8,36 33,36 Z" />
+
+    <!-- Tossed Coin Token (Apex of trajectory) -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M81,25 A7,7 0 1,0 81,39 A7,7 0 1,0 81,25 Z" />
+
+    <!-- Coin Inner Core -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M81,29 A3,3 0 1,0 81,35 A3,3 0 1,0 81,29 Z" />
 </vector>

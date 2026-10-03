@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tosse Pay Official Vector Logo -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Dynamic Toss Arc (trajectory curve) -->
+    <path
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M27,72 C22,50 36,28 60,26 C69,25 76,28 81,33">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="27"
+                android:startY="72"
+                android:endX="81"
+                android:endY="33"
+                android:type="linear">
+                <item android:offset="0.0" android:color="@color/tossepay_blue" />
+                <item android:offset="0.5" android:color="@color/tossepay_cyan" />
+                <item android:offset="1.0" android:color="@color/tossepay_emerald" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Stylized 'T' Symbol -->
+    <path
+        android:pathData="M33,36 L75,36 C77.2,36 79,37.8 79,40 C79,42.2 77.2,44 75,44 L59,44 L59,75 C59,77.5 56.8,79.5 54,79.5 C51.2,79.5 49,77.5 49,75 L49,44 L33,44 C30.8,44 29,42.2 29,40 C29,37.8 30.8,36 33,36 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="33"
+                android:startY="36"
+                android:endX="79"
+                android:endY="79"
+                android:type="linear">
+                <item android:offset="0.0" android:color="@color/tossepay_blue" />
+                <item android:offset="0.6" android:color="@color/tossepay_cyan" />
+                <item android:offset="1.0" android:color="@color/tossepay_emerald" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Tossed Coin Token (Apex of trajectory) -->
+    <path
+        android:pathData="M81,25 A7,7 0 1,0 81,39 A7,7 0 1,0 81,25 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="74"
+                android:startY="25"
+                android:endX="88"
+                android:endY="39"
+                android:type="linear">
+                <item android:offset="0.0" android:color="@color/tossepay_emerald" />
+                <item android:offset="1.0" android:color="@color/tossepay_cyan" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Coin Inner Core -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M81,29.5 A2.5,2.5 0 1,0 81,34.5 A2.5,2.5 0 1,0 81,29.5 Z" />
+</vector>

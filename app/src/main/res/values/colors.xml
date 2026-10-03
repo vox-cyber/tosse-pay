@@ -2,9 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="tossepay_green">#FF4CAF50</color>
-    
-    <!-- Setup Screen Colors -->
+    <color name="tossepay_green">#FF00E676</color>
+    <color name="tossepay_blue">#FF2979FF</color>
+    <color name="tossepay_cyan">#FF00E5FF</color>
+    <color name="tossepay_emerald">#FF00E676</color>
+    <color name="tossepay_dark_surface">#FF0F172A</color>
+
     <color name="setup_text_secondary">#FF888888</color>
     <color name="setup_text_tertiary">#FF4A4A4A</color>
 

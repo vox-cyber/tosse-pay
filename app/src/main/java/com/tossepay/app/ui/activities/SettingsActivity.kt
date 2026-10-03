@@ -366,6 +366,12 @@ fun SettingsScreen(
                 item {
                     GroupCard {
                         SettingsRow(
+                            icon = Icons.Default.AccountBalanceWallet,
+                            title = "Application",
+                            value = "Tosse Pay"
+                        )
+                        GroupDivider()
+                        SettingsRow(
                             icon = Icons.Default.Info,
                             title = "Version",
                             // Read from the build, never hardcoded: this row

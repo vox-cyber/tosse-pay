@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Adaptive icon 108×108 dp; 12dp inset → 84×84 dp wordmark (large; edges may clip on circular/squircle masks). -->
+<!-- Adaptive icon foreground 108×108 dp; safe viewport inside 72×72 dp -->
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetLeft="12dp"
-    android:insetTop="12dp"
-    android:insetRight="12dp"
-    android:insetBottom="12dp"
-    android:drawable="@drawable/ic_tossepay_wordmark" />
+    android:insetLeft="14dp"
+    android:insetTop="14dp"
+    android:insetRight="14dp"
+    android:insetBottom="14dp"
+    android:drawable="@drawable/ic_tossepay_logo" />

@@ -36,6 +36,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -217,21 +218,22 @@ fun HeaderCard() {
                     .padding(24.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Icon in frosted circle
+                    // Icon in frosted container
                     Box(
                         modifier = Modifier
-                            .size(44.dp)
+                            .size(48.dp)
                             .background(
                                 color = Color.White.copy(alpha = 0.22f),
-                                shape = CircleShape
-                            ),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(6.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Default.AccountBalanceWallet,
-                            contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier.size(22.dp)
+                            painter = painterResource(id = R.drawable.ic_tossepay_logo),
+                            contentDescription = "Tosse Pay Logo",
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(36.dp)
                         )
                     }
 
