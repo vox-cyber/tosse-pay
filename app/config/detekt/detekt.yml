@@ -1,0 +1,28 @@
+# Project detekt overrides, merged on top of the default config
+# (build.gradle.kts sets buildUponDefaultConfig = true).
+naming:
+  FunctionNaming:
+    # @Composable functions are PascalCase by convention; don't flag them.
+    ignoreAnnotated: ['Composable']
+
+style:
+  WildcardImport:
+    # Compose's layout/material3/runtime/animation packages are DSL surfaces —
+    # a screen legitimately pulls dozens of symbols from each, and the
+    # ecosystem (including Google's own samples) imports them wholesale.
+    # Everything else must be imported explicitly.
+    excludeImports:
+      - 'androidx.compose.foundation.*'
+      - 'androidx.compose.foundation.layout.*'
+      - 'androidx.compose.material3.*'
+      - 'androidx.compose.runtime.*'
+      - 'androidx.compose.animation.core.*'
+      - 'androidx.compose.material.icons.filled.*'
+
+  MagicNumber:
+    # Compose UI is full of literal dp/sp/color/alpha values; flagging them as
+    # "magic numbers" is noise. Design tokens are handled in the Phase 3 pass.
+    ignoreAnnotated: ['Composable']
+    # ui/theme is where the literal color/typography tokens are DEFINED — the
+    # one place raw hex belongs.
+    excludes: ['**/ui/theme/**']

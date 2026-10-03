@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/TossePay/tosse-pay/blob/main/SECURITY.md
+    about: >-
+      Do not file a public issue for security reports. Email
+      support@tosse.io with the subject "Tosse Pay UPI — Security report".
+      Full policy and disclosure timeline in SECURITY.md.
