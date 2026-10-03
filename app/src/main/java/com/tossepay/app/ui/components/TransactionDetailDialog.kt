@@ -31,14 +31,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.tossepay.app.R
 import com.tossepay.app.data.Transaction
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayLightGray
-import com.tossepay.app.ui.theme.Tosse PayMediumGray
-import com.tossepay.app.ui.theme.Tosse PayStatusError
-import com.tossepay.app.ui.theme.Tosse PaySurfaceDim
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.Tosse PayTextPale
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayLightGray
+import com.tossepay.app.ui.theme.TossePayMediumGray
+import com.tossepay.app.ui.theme.TossePayStatusError
+import com.tossepay.app.ui.theme.TossePaySurfaceDim
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.TossePayTextPale
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 import com.tossepay.app.ui.theme.statusColor
 import com.tossepay.app.utils.CurrencyFormat
 import java.text.SimpleDateFormat
@@ -52,14 +52,14 @@ fun TransactionDetailDialog(
     onDelete: (() -> Unit)? = null
 ) {
     val clipboardManager = LocalClipboardManager.current
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     val statusColor = statusColor(transaction.status)
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            color = Tosse PaySurfaceDim,
+            color = TossePaySurfaceDim,
             shape = RoundedCornerShape(24.dp)
         ) {
             Column(
@@ -74,7 +74,7 @@ fun TransactionDetailDialog(
                         .width(40.dp)
                         .height(4.dp)
                         .clip(RoundedCornerShape(2.dp))
-                        .background(Tosse PayLightGray)
+                        .background(TossePayLightGray)
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -95,7 +95,7 @@ fun TransactionDetailDialog(
                         modifier = Modifier
                             .size(32.dp)
                             .clip(RoundedCornerShape(8.dp))
-                            .background(Tosse PayDarkGray)
+                            .background(TossePayDarkGray)
                             .clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
@@ -105,7 +105,7 @@ fun TransactionDetailDialog(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.detail_close),
-                            tint = Tosse PayTextLightGray,
+                            tint = TossePayTextLightGray,
                             modifier = Modifier.size(16.dp)
                         )
                     }
@@ -146,7 +146,7 @@ fun TransactionDetailDialog(
                     Text(
                         text = explainer,
                         fontSize = 12.sp,
-                        color = Tosse PayTextPale,
+                        color = TossePayTextPale,
                         textAlign = TextAlign.Center,
                         lineHeight = 16.sp,
                         modifier = Modifier.padding(horizontal = 8.dp)
@@ -158,7 +158,7 @@ fun TransactionDetailDialog(
                 // Detail card
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = Tosse PayDarkGray,
+                    color = TossePayDarkGray,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -232,7 +232,7 @@ fun TransactionDetailDialog(
                     Spacer(modifier = Modifier.height(12.dp))
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = Tosse PayDarkGray,
+                        color = TossePayDarkGray,
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
@@ -240,13 +240,13 @@ fun TransactionDetailDialog(
                                 text = stringResource(R.string.detail_bank_confirmation),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
-                                color = Tosse PayTextLightGray
+                                color = TossePayTextLightGray
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
                                 text = transaction.smsExcerpt,
                                 fontSize = 12.sp,
-                                color = Tosse PayTextLightGray,
+                                color = TossePayTextLightGray,
                                 fontFamily = FontFamily.Monospace,
                                 lineHeight = 16.sp
                             )
@@ -261,7 +261,7 @@ fun TransactionDetailDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(12.dp))
-                            .background(Tosse PayStatusError.copy(alpha = 0.1f))
+                            .background(TossePayStatusError.copy(alpha = 0.1f))
                             .clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
@@ -273,7 +273,7 @@ fun TransactionDetailDialog(
                             text = stringResource(R.string.detail_delete_transaction),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Tosse PayStatusError
+                            color = TossePayStatusError
                         )
                     }
                 }
@@ -285,9 +285,9 @@ fun TransactionDetailDialog(
     if (showDeleteConfirm && onDelete != null) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            containerColor = Tosse PayDarkGray,
+            containerColor = TossePayDarkGray,
             titleContentColor = Color.White,
-            textContentColor = Tosse PayTextPale,
+            textContentColor = TossePayTextPale,
             title = {
                 Text(
                     stringResource(R.string.detail_delete_confirm_title),
@@ -310,14 +310,14 @@ fun TransactionDetailDialog(
                 }) {
                     Text(
                         stringResource(R.string.action_delete),
-                        color = Tosse PayStatusError,
+                        color = TossePayStatusError,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirm = false }) {
-                    Text(stringResource(R.string.action_cancel), color = Tosse PayTextLightGray)
+                    Text(stringResource(R.string.action_cancel), color = TossePayTextLightGray)
                 }
             }
         )
@@ -340,7 +340,7 @@ private fun DetailRow(
             Text(
                 text = label,
                 fontSize = 12.sp,
-                color = Tosse PayTextLightGray
+                color = TossePayTextLightGray
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
@@ -357,7 +357,7 @@ private fun DetailRow(
             modifier = Modifier
                 .size(28.dp)
                 .clip(RoundedCornerShape(6.dp))
-                .background(Tosse PayMediumGray)
+                .background(TossePayMediumGray)
                 .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
@@ -368,7 +368,7 @@ private fun DetailRow(
                 imageVector = Icons.Default.ContentCopy,
                 contentDescription = "Copy",
                 modifier = Modifier.size(14.dp),
-                tint = Tosse PayTextLightGray
+                tint = TossePayTextLightGray
             )
         }
     }
@@ -379,7 +379,7 @@ private fun DetailDivider() {
     HorizontalDivider(
         modifier = Modifier.padding(vertical = 2.dp),
         thickness = 0.5.dp,
-        color = Tosse PayMediumGray
+        color = TossePayMediumGray
     )
 }
 

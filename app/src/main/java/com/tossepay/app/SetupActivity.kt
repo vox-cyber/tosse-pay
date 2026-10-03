@@ -43,14 +43,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tossepay.app.helpers.SetupHelper
 import com.tossepay.app.ui.theme.BlueAccentTheme
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayDisabledGray
-import com.tossepay.app.ui.theme.Tosse PayLightGray
-import com.tossepay.app.ui.theme.Tosse PayMediumGray
-import com.tossepay.app.ui.theme.Tosse PaySurfaceDim
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.Tosse PayTheme
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayDisabledGray
+import com.tossepay.app.ui.theme.TossePayLightGray
+import com.tossepay.app.ui.theme.TossePayMediumGray
+import com.tossepay.app.ui.theme.TossePaySurfaceDim
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.TossePayTheme
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 
 class SetupActivity : ComponentActivity() {
     private lateinit var setupHelper: SetupHelper
@@ -78,8 +78,8 @@ class SetupActivity : ComponentActivity() {
         // Edge-to-edge: Compose insets are the single source of padding (see MainActivity).
         androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            CompositionLocalProvider(LocalTosse PayAccentTheme provides BlueAccentTheme) {
-                Tosse PayTheme {
+            CompositionLocalProvider(LocalTossePayAccentTheme provides BlueAccentTheme) {
+                TossePayTheme {
                     SetupScreen(setupHelper = setupHelper)
                 }
             }
@@ -185,7 +185,7 @@ fun SetupScreen(setupHelper: SetupHelper) {
 
 @Composable
 fun HeaderCard() {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     val headerShape = RoundedCornerShape(20.dp)
 
     Card(
@@ -292,7 +292,7 @@ private fun SetupSectionHeader(
     title: String,
     subtitle: String
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
@@ -318,7 +318,7 @@ private fun SetupSectionHeader(
             Text(
                 text = subtitle,
                 fontSize = 12.sp,
-                color = Tosse PayTextLightGray
+                color = TossePayTextLightGray
             )
         }
     }
@@ -330,7 +330,7 @@ private fun SetupFieldLabel(text: String) {
         text = text,
         fontSize = 13.sp,
         fontWeight = FontWeight.Medium,
-        color = Tosse PayTextLightGray,
+        color = TossePayTextLightGray,
         modifier = Modifier.padding(bottom = 8.dp)
     )
 }
@@ -345,7 +345,7 @@ fun BankSelectionSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Tosse PaySurfaceDim, RoundedCornerShape(20.dp))
+            .background(TossePaySurfaceDim, RoundedCornerShape(20.dp))
             .padding(18.dp)
     ) {
         SetupSectionHeader(
@@ -376,10 +376,10 @@ fun BankSelectionSection(
                     .fillMaxWidth()
                     .menuAnchor(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Tosse PayDisabledGray,
-                    unfocusedBorderColor = Tosse PayLightGray,
-                    focusedContainerColor = Tosse PayMediumGray,
-                    unfocusedContainerColor = Tosse PayDarkGray,
+                    focusedBorderColor = TossePayDisabledGray,
+                    unfocusedBorderColor = TossePayLightGray,
+                    focusedContainerColor = TossePayMediumGray,
+                    unfocusedContainerColor = TossePayDarkGray,
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
                     focusedTrailingIconColor = Color.White,
@@ -392,7 +392,7 @@ fun BankSelectionSection(
             ExposedDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
-                modifier = Modifier.background(Tosse PayMediumGray)
+                modifier = Modifier.background(TossePayMediumGray)
             ) {
                 banks.forEach { (value, label) ->
                     DropdownMenuItem(
@@ -407,7 +407,7 @@ fun BankSelectionSection(
                             onBankSelected(value)
                             expanded = false
                         },
-                        modifier = Modifier.background(Tosse PayMediumGray)
+                        modifier = Modifier.background(TossePayMediumGray)
                     )
                 }
             }
@@ -427,12 +427,12 @@ fun SimCardSelectionSection(
     onDualSimToggled: (Boolean) -> Unit,
     secondarySimOptions: List<Pair<String, String>>
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Tosse PaySurfaceDim, RoundedCornerShape(20.dp))
+            .background(TossePaySurfaceDim, RoundedCornerShape(20.dp))
             .padding(18.dp)
     ) {
         SetupSectionHeader(
@@ -464,10 +464,10 @@ fun SimCardSelectionSection(
                     .fillMaxWidth()
                     .menuAnchor(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Tosse PayDisabledGray,
-                    unfocusedBorderColor = Tosse PayLightGray,
-                    focusedContainerColor = Tosse PayMediumGray,
-                    unfocusedContainerColor = Tosse PayDarkGray,
+                    focusedBorderColor = TossePayDisabledGray,
+                    unfocusedBorderColor = TossePayLightGray,
+                    focusedContainerColor = TossePayMediumGray,
+                    unfocusedContainerColor = TossePayDarkGray,
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
                     focusedTrailingIconColor = Color.White,
@@ -480,7 +480,7 @@ fun SimCardSelectionSection(
             ExposedDropdownMenu(
                 expanded = primaryExpanded,
                 onDismissRequest = { primaryExpanded = false },
-                modifier = Modifier.background(Tosse PayMediumGray)
+                modifier = Modifier.background(TossePayMediumGray)
             ) {
                 simCarriers.forEach { (value, label) ->
                     DropdownMenuItem(
@@ -495,7 +495,7 @@ fun SimCardSelectionSection(
                             onPrimarySimSelected(value)
                             primaryExpanded = false
                         },
-                        modifier = Modifier.background(Tosse PayMediumGray)
+                        modifier = Modifier.background(TossePayMediumGray)
                     )
                 }
             }
@@ -518,7 +518,7 @@ fun SimCardSelectionSection(
                     .size(22.dp)
                     .border(
                         width = 2.dp,
-                        color = if (isDualSimEnabled) accent.accent else Tosse PayDisabledGray,
+                        color = if (isDualSimEnabled) accent.accent else TossePayDisabledGray,
                         shape = CircleShape
                     )
                     .background(
@@ -551,7 +551,7 @@ fun SimCardSelectionSection(
             Spacer(modifier = Modifier.height(16.dp))
 
             HorizontalDivider(
-                color = Tosse PayMediumGray,
+                color = TossePayMediumGray,
                 thickness = 0.5.dp
             )
 
@@ -578,10 +578,10 @@ fun SimCardSelectionSection(
                         .fillMaxWidth()
                         .menuAnchor(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Tosse PayDisabledGray,
-                        unfocusedBorderColor = Tosse PayLightGray,
-                        focusedContainerColor = Tosse PayMediumGray,
-                        unfocusedContainerColor = Tosse PayDarkGray,
+                        focusedBorderColor = TossePayDisabledGray,
+                        unfocusedBorderColor = TossePayLightGray,
+                        focusedContainerColor = TossePayMediumGray,
+                        unfocusedContainerColor = TossePayDarkGray,
                         focusedTextColor = Color.White,
                         unfocusedTextColor = Color.White,
                         focusedTrailingIconColor = Color.White,
@@ -594,7 +594,7 @@ fun SimCardSelectionSection(
                 ExposedDropdownMenu(
                     expanded = secondaryExpanded,
                     onDismissRequest = { secondaryExpanded = false },
-                    modifier = Modifier.background(Tosse PayMediumGray)
+                    modifier = Modifier.background(TossePayMediumGray)
                 ) {
                     secondarySimOptions.forEach { (value, label) ->
                         DropdownMenuItem(
@@ -609,7 +609,7 @@ fun SimCardSelectionSection(
                                 onSecondarySimSelected(value)
                                 secondaryExpanded = false
                             },
-                            modifier = Modifier.background(Tosse PayMediumGray)
+                            modifier = Modifier.background(TossePayMediumGray)
                         )
                     }
                 }
@@ -623,13 +623,13 @@ fun DisclaimerSection(
     isAccepted: Boolean,
     onAcceptedChange: (Boolean) -> Unit
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     var isExpanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Tosse PaySurfaceDim, RoundedCornerShape(20.dp))
+            .background(TossePaySurfaceDim, RoundedCornerShape(20.dp))
             .padding(18.dp)
     ) {
         SetupSectionHeader(
@@ -656,7 +656,7 @@ fun DisclaimerSection(
                         ) { onAcceptedChange(!isAccepted) }
                         .border(
                             width = 2.dp,
-                            color = if (isAccepted) accent.accent else Tosse PayDisabledGray,
+                            color = if (isAccepted) accent.accent else TossePayDisabledGray,
                             shape = CircleShape
                         )
                         .background(
@@ -721,13 +721,13 @@ fun CompleteSetupButton(
     enabled: Boolean,
     onCompleteSetup: () -> Unit
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     val buttonShape = RoundedCornerShape(16.dp)
 
     val gradientColors = if (enabled) {
         listOf(accent.headerGradientStart, accent.headerGradientEnd)
     } else {
-        listOf(Tosse PayLightGray, Tosse PayMediumGray)
+        listOf(TossePayLightGray, TossePayMediumGray)
     }
 
     Box(

@@ -6,7 +6,7 @@ package com.tossepay.app.ui.theme
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-data class Tosse PayAccentTheme(
+data class TossePayAccentTheme(
     val primary: Color,
     val primaryDark: Color,
     val headerGradientStart: Color,
@@ -15,7 +15,7 @@ data class Tosse PayAccentTheme(
     val accentLight: Color
 )
 
-val BlueAccentTheme = Tosse PayAccentTheme(
+val BlueAccentTheme = TossePayAccentTheme(
     primary = Color(0xFF5B8DEF),
     primaryDark = Color(0xFF1976D2),
     headerGradientStart = Color(0xFF7BA8F5),
@@ -24,4 +24,4 @@ val BlueAccentTheme = Tosse PayAccentTheme(
     accentLight = Color(0xFF4A9EFF)
 )
 
-val LocalTosse PayAccentTheme = compositionLocalOf { BlueAccentTheme }
+val LocalTossePayAccentTheme = compositionLocalOf { BlueAccentTheme }

@@ -26,13 +26,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.tossepay.app.R
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayLightGray
-import com.tossepay.app.ui.theme.Tosse PayOutlineGray
-import com.tossepay.app.ui.theme.Tosse PayTextGray
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.Tosse PayTextPale
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayLightGray
+import com.tossepay.app.ui.theme.TossePayOutlineGray
+import com.tossepay.app.ui.theme.TossePayTextGray
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.TossePayTextPale
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -91,8 +91,8 @@ private fun UssdProgressDialogContent(
             .fillMaxWidth()
             .padding(32.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Tosse PayDarkGray),
-        border = BorderStroke(1.dp, Tosse PayLightGray)
+        colors = CardDefaults.cardColors(containerColor = TossePayDarkGray),
+        border = BorderStroke(1.dp, TossePayLightGray)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(
@@ -106,7 +106,7 @@ private fun UssdProgressDialogContent(
                     modifier = Modifier
                         .size(80.dp)
                         .background(
-                            color = LocalTosse PayAccentTheme.current.accent.copy(alpha = alpha * 0.2f),
+                            color = LocalTossePayAccentTheme.current.accent.copy(alpha = alpha * 0.2f),
                             shape = CircleShape
                         ),
                     contentAlignment = Alignment.Center
@@ -114,7 +114,7 @@ private fun UssdProgressDialogContent(
                     Icon(
                         imageVector = PhoneIcon,
                         contentDescription = stringResource(R.string.ussd_dlg_cd_ussd_setup),
-                        tint = LocalTosse PayAccentTheme.current.accent,
+                        tint = LocalTossePayAccentTheme.current.accent,
                         modifier = Modifier.size(48.dp)
                     )
                 }
@@ -143,7 +143,7 @@ private fun UssdProgressDialogContent(
                     },
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Tosse PayTextLightGray,
+                    color = TossePayTextLightGray,
                     textAlign = TextAlign.Center,
                     lineHeight = 24.sp
                 )
@@ -162,7 +162,7 @@ private fun UssdProgressDialogContent(
                                 .height(50.dp),
                             shape = RoundedCornerShape(15.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Tosse PayLightGray
+                                containerColor = TossePayLightGray
                             )
                         ) {
                             Text(
@@ -181,7 +181,7 @@ private fun UssdProgressDialogContent(
                                 .height(50.dp),
                             shape = RoundedCornerShape(15.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = LocalTosse PayAccentTheme.current.accent
+                                containerColor = LocalTossePayAccentTheme.current.accent
                             )
                         ) {
                             Text(
@@ -198,8 +198,8 @@ private fun UssdProgressDialogContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(6.dp),
-                        color = LocalTosse PayAccentTheme.current.accent,
-                        trackColor = Tosse PayLightGray
+                        color = LocalTossePayAccentTheme.current.accent,
+                        trackColor = TossePayLightGray
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -208,7 +208,7 @@ private fun UssdProgressDialogContent(
                         text = progressMessage,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
-                        color = Tosse PayTextGray.copy(alpha = alpha),
+                        color = TossePayTextGray.copy(alpha = alpha),
                         textAlign = TextAlign.Center
                     )
 
@@ -231,9 +231,9 @@ private fun UssdProgressDialogContent(
                                 .fillMaxWidth()
                                 .height(48.dp),
                             shape = RoundedCornerShape(15.dp),
-                            border = BorderStroke(1.dp, LocalTosse PayAccentTheme.current.accent),
+                            border = BorderStroke(1.dp, LocalTossePayAccentTheme.current.accent),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = LocalTosse PayAccentTheme.current.accent
+                                contentColor = LocalTossePayAccentTheme.current.accent
                             )
                         ) {
                             Text(
@@ -251,9 +251,9 @@ private fun UssdProgressDialogContent(
                                 .fillMaxWidth()
                                 .height(48.dp),
                             shape = RoundedCornerShape(15.dp),
-                            border = BorderStroke(1.dp, Tosse PayOutlineGray),
+                            border = BorderStroke(1.dp, TossePayOutlineGray),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Tosse PayTextPale
+                                contentColor = TossePayTextPale
                             )
                         ) {
                             Text(
@@ -276,7 +276,7 @@ private fun UssdProgressDialogContent(
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = stringResource(R.string.ussd_dlg_cd_close),
-                    tint = Tosse PayTextLightGray,
+                    tint = TossePayTextLightGray,
                     modifier = Modifier.size(22.dp)
                 )
             }

@@ -12,13 +12,13 @@ import androidx.core.view.WindowCompat
 import com.tossepay.app.utils.findComponentActivity
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Tosse PayTextWhite,
-    secondary = Tosse PayAccentBlue,
-    tertiary = Tosse PayAccentGreen,
-    background = Tosse PayBlack,
-    surface = Tosse PayDarkGray,
-    onBackground = Tosse PayTextWhite,
-    onSurface = Tosse PayTextWhite
+    primary = TossePayTextWhite,
+    secondary = TossePayAccentBlue,
+    tertiary = TossePayAccentGreen,
+    background = TossePayBlack,
+    surface = TossePayDarkGray,
+    onBackground = TossePayTextWhite,
+    onSurface = TossePayTextWhite
 )
 
 /**
@@ -29,7 +29,7 @@ private val DarkColorScheme = darkColorScheme(
  * fake (black background with light accents) and has been removed.
  */
 @Composable
-fun Tosse PayTheme(
+fun TossePayTheme(
     content: @Composable () -> Unit
 ) {
     val view = LocalView.current

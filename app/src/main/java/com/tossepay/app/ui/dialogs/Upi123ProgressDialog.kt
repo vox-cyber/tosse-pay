@@ -26,11 +26,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.tossepay.app.R
-import com.tossepay.app.ui.theme.Tosse PayAccentGreen
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayLightGray
-import com.tossepay.app.ui.theme.Tosse PayTextGray
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
+import com.tossepay.app.ui.theme.TossePayAccentGreen
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayLightGray
+import com.tossepay.app.ui.theme.TossePayTextGray
+import com.tossepay.app.ui.theme.TossePayTextLightGray
 import kotlinx.coroutines.delay
 
 @Composable
@@ -83,8 +83,8 @@ private fun Upi123ProgressDialogContent(
             .fillMaxWidth()
             .padding(32.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Tosse PayDarkGray),
-        border = BorderStroke(1.dp, Tosse PayLightGray)
+        colors = CardDefaults.cardColors(containerColor = TossePayDarkGray),
+        border = BorderStroke(1.dp, TossePayLightGray)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(
@@ -98,7 +98,7 @@ private fun Upi123ProgressDialogContent(
                     modifier = Modifier
                         .size(80.dp)
                         .background(
-                            color = Tosse PayAccentGreen.copy(alpha = alpha * 0.2f),
+                            color = TossePayAccentGreen.copy(alpha = alpha * 0.2f),
                             shape = CircleShape
                         ),
                     contentAlignment = Alignment.Center
@@ -106,7 +106,7 @@ private fun Upi123ProgressDialogContent(
                     Icon(
                         imageVector = UpiIcon,
                         contentDescription = stringResource(R.string.upi123_dlg_setup_icon_desc),
-                        tint = Tosse PayAccentGreen,
+                        tint = TossePayAccentGreen,
                         modifier = Modifier.size(48.dp)
                     )
                 }
@@ -135,7 +135,7 @@ private fun Upi123ProgressDialogContent(
                     },
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Tosse PayTextLightGray,
+                    color = TossePayTextLightGray,
                     textAlign = TextAlign.Center,
                     lineHeight = 24.sp
                 )
@@ -154,7 +154,7 @@ private fun Upi123ProgressDialogContent(
                                 .height(50.dp),
                             shape = RoundedCornerShape(15.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Tosse PayLightGray
+                                containerColor = TossePayLightGray
                             )
                         ) {
                             Text(
@@ -173,7 +173,7 @@ private fun Upi123ProgressDialogContent(
                                 .height(50.dp),
                             shape = RoundedCornerShape(15.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Tosse PayAccentGreen
+                                containerColor = TossePayAccentGreen
                             )
                         ) {
                             Text(
@@ -190,8 +190,8 @@ private fun Upi123ProgressDialogContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(6.dp),
-                        color = Tosse PayAccentGreen,
-                        trackColor = Tosse PayLightGray
+                        color = TossePayAccentGreen,
+                        trackColor = TossePayLightGray
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -200,7 +200,7 @@ private fun Upi123ProgressDialogContent(
                         text = stringResource(R.string.upi123_dlg_configuring),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
-                        color = Tosse PayTextGray.copy(alpha = alpha),
+                        color = TossePayTextGray.copy(alpha = alpha),
                         textAlign = TextAlign.Center
                     )
 
@@ -221,9 +221,9 @@ private fun Upi123ProgressDialogContent(
                                 .fillMaxWidth()
                                 .height(50.dp),
                             shape = RoundedCornerShape(15.dp),
-                            border = BorderStroke(1.dp, Tosse PayAccentGreen),
+                            border = BorderStroke(1.dp, TossePayAccentGreen),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Tosse PayAccentGreen
+                                contentColor = TossePayAccentGreen
                             )
                         ) {
                             Text(
@@ -247,7 +247,7 @@ private fun Upi123ProgressDialogContent(
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = stringResource(R.string.upi123_dlg_close),
-                    tint = Tosse PayTextLightGray,
+                    tint = TossePayTextLightGray,
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -266,7 +266,7 @@ val UpiIcon: ImageVector
             viewportHeight = 24f
         ).apply {
             path(
-                fill = androidx.compose.ui.graphics.SolidColor(Tosse PayAccentGreen),
+                fill = androidx.compose.ui.graphics.SolidColor(TossePayAccentGreen),
                 fillAlpha = 1f,
                 stroke = null,
                 strokeAlpha = 1f,

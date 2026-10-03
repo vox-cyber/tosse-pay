@@ -46,16 +46,16 @@ import com.tossepay.app.SetupActivity
 import com.tossepay.app.data.SettingsRepository
 import com.tossepay.app.repository.TransactionRepository
 import com.tossepay.app.ui.theme.BlueAccentTheme
-import com.tossepay.app.ui.theme.Tosse PayAccentGreenBright
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayDisabledGray
-import com.tossepay.app.ui.theme.Tosse PayMediumGray
-import com.tossepay.app.ui.theme.Tosse PayStatusError
-import com.tossepay.app.ui.theme.Tosse PaySurfaceDim
-import com.tossepay.app.ui.theme.Tosse PayTextGray
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.Tosse PayTextPale
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayAccentGreenBright
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayDisabledGray
+import com.tossepay.app.ui.theme.TossePayMediumGray
+import com.tossepay.app.ui.theme.TossePayStatusError
+import com.tossepay.app.ui.theme.TossePaySurfaceDim
+import com.tossepay.app.ui.theme.TossePayTextGray
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.TossePayTextPale
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -74,8 +74,8 @@ class SettingsActivity : ComponentActivity() {
         val settingsRepository = app?.settingsRepository ?: SettingsRepository(applicationContext)
         setTheme(R.style.Theme_TossePay)
         setContent {
-            CompositionLocalProvider(LocalTosse PayAccentTheme provides BlueAccentTheme) {
-                Tosse PaySettingsTheme {
+            CompositionLocalProvider(LocalTossePayAccentTheme provides BlueAccentTheme) {
+                TossePaySettingsTheme {
                     SettingsScreen(
                         onBackPressed = { finish() },
                         settingsRepository = settingsRepository,
@@ -97,14 +97,14 @@ class SettingsActivity : ComponentActivity() {
 
 // Theme
 @Composable
-fun Tosse PaySettingsTheme(content: @Composable () -> Unit) {
-    val accentTheme = LocalTosse PayAccentTheme.current
+fun TossePaySettingsTheme(content: @Composable () -> Unit) {
+    val accentTheme = LocalTossePayAccentTheme.current
     MaterialTheme(
         colorScheme = darkColorScheme(
             primary = accentTheme.primary,
             secondary = accentTheme.accent,
-            background = Tosse PaySurfaceDim,
-            surface = Tosse PayDarkGray,
+            background = TossePaySurfaceDim,
+            surface = TossePayDarkGray,
             onBackground = Color.White,
             onSurface = Color.White
         )
@@ -202,7 +202,7 @@ fun SettingsScreen(
     refreshTrigger: MutableIntState = mutableIntStateOf(0)
 ) {
     val context = LocalContext.current
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     val state = viewModel.state
 
     // Load settings from repository on first composition
@@ -238,7 +238,7 @@ fun SettingsScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Tosse PaySurfaceDim)
+            .background(TossePaySurfaceDim)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Top Bar
@@ -261,7 +261,7 @@ fun SettingsScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Tosse PaySurfaceDim
+                    containerColor = TossePaySurfaceDim
                 )
             )
 
@@ -422,9 +422,9 @@ fun SettingsScreen(
     if (showClearDataConfirm) {
         AlertDialog(
             onDismissRequest = { showClearDataConfirm = false },
-            containerColor = Tosse PayDarkGray,
+            containerColor = TossePayDarkGray,
             titleContentColor = Color.White,
-            textContentColor = Tosse PayTextPale,
+            textContentColor = TossePayTextPale,
             title = {
                 Text(
                     stringResource(R.string.settings_clear_data_title),
@@ -471,14 +471,14 @@ fun SettingsScreen(
                 }) {
                     Text(
                         stringResource(R.string.action_clear),
-                        color = Tosse PayStatusError,
+                        color = TossePayStatusError,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showClearDataConfirm = false }) {
-                    Text(stringResource(R.string.action_cancel), color = Tosse PayTextLightGray)
+                    Text(stringResource(R.string.action_cancel), color = TossePayTextLightGray)
                 }
             }
         )
@@ -495,7 +495,7 @@ private fun SectionHeader(title: String) {
         text = title,
         fontSize = 12.sp,
         fontWeight = FontWeight.Medium,
-        color = Tosse PayTextGray,
+        color = TossePayTextGray,
         letterSpacing = 1.sp,
         modifier = Modifier.padding(start = 4.dp, top = 8.dp, bottom = 4.dp)
     )
@@ -506,7 +506,7 @@ private fun GroupCard(content: @Composable ColumnScope.() -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = Tosse PayDarkGray
+        color = TossePayDarkGray
     ) {
         Column(content = content)
     }
@@ -515,7 +515,7 @@ private fun GroupCard(content: @Composable ColumnScope.() -> Unit) {
 @Composable
 private fun GroupDivider() {
     HorizontalDivider(
-        color = Tosse PayMediumGray,
+        color = TossePayMediumGray,
         thickness = 0.5.dp,
         modifier = Modifier.padding(start = 56.dp)
     )
@@ -529,10 +529,10 @@ private fun SettingsRow(
     destructive: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
-    val accent = LocalTosse PayAccentTheme.current
-    val iconColor = if (destructive) Tosse PayStatusError else accent.primary
-    val iconBg = if (destructive) Tosse PayStatusError.copy(alpha = 0.12f) else accent.primary.copy(alpha = 0.12f)
-    val titleColor = if (destructive) Tosse PayStatusError else Color.White
+    val accent = LocalTossePayAccentTheme.current
+    val iconColor = if (destructive) TossePayStatusError else accent.primary
+    val iconBg = if (destructive) TossePayStatusError.copy(alpha = 0.12f) else accent.primary.copy(alpha = 0.12f)
+    val titleColor = if (destructive) TossePayStatusError else Color.White
 
     Row(
         modifier = Modifier
@@ -573,7 +573,7 @@ private fun SettingsRow(
             Text(
                 text = value,
                 fontSize = 14.sp,
-                color = Tosse PayTextLightGray,
+                color = TossePayTextLightGray,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.widthIn(max = 160.dp)
@@ -582,14 +582,14 @@ private fun SettingsRow(
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = Tosse PayDisabledGray,
+                tint = TossePayDisabledGray,
                 modifier = Modifier.size(20.dp)
             )
         } else {
             Text(
                 text = value,
                 fontSize = 14.sp,
-                color = Tosse PayTextLightGray,
+                color = TossePayTextLightGray,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -605,7 +605,7 @@ private fun PermissionRow(
     granted: Boolean,
     onRequest: () -> Unit
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
 
     Row(
         modifier = Modifier
@@ -642,7 +642,7 @@ private fun PermissionRow(
             Text(
                 text = subtitle,
                 fontSize = 12.sp,
-                color = Tosse PayTextLightGray
+                color = TossePayTextLightGray
             )
         }
 
@@ -650,11 +650,11 @@ private fun PermissionRow(
         if (granted) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
-                color = Tosse PayAccentGreenBright.copy(alpha = 0.12f)
+                color = TossePayAccentGreenBright.copy(alpha = 0.12f)
             ) {
                 Text(
                     text = "Granted",
-                    color = Tosse PayAccentGreenBright,
+                    color = TossePayAccentGreenBright,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -684,12 +684,12 @@ private fun BankPickerDialog(
     onBankSelected: (Bank) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(20.dp),
-            color = Tosse PayDarkGray
+            color = TossePayDarkGray
         ) {
             Column(
                 modifier = Modifier.padding(vertical = 20.dp)
@@ -732,7 +732,7 @@ private fun BankPickerDialog(
                         }
                         if (bank != banks.last()) {
                             HorizontalDivider(
-                                color = Tosse PayMediumGray,
+                                color = TossePayMediumGray,
                                 thickness = 0.5.dp,
                                 modifier = Modifier.padding(horizontal = 20.dp)
                             )
@@ -748,7 +748,7 @@ private fun BankPickerDialog(
                         .align(Alignment.End)
                         .padding(horizontal = 12.dp)
                 ) {
-                    Text(stringResource(R.string.action_cancel), color = Tosse PayTextLightGray)
+                    Text(stringResource(R.string.action_cancel), color = TossePayTextLightGray)
                 }
             }
         }
@@ -761,7 +761,7 @@ private fun SimPickerDialog(
     onSimSelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     val sims = listOf(
         "jio" to "Jio",
         "airtel" to "Airtel",
@@ -772,7 +772,7 @@ private fun SimPickerDialog(
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(20.dp),
-            color = Tosse PayDarkGray
+            color = TossePayDarkGray
         ) {
             Column(modifier = Modifier.padding(vertical = 20.dp)) {
                 Text(
@@ -810,7 +810,7 @@ private fun SimPickerDialog(
                     }
                     if (index < sims.lastIndex) {
                         HorizontalDivider(
-                            color = Tosse PayMediumGray,
+                            color = TossePayMediumGray,
                             thickness = 0.5.dp,
                             modifier = Modifier.padding(horizontal = 20.dp)
                         )
@@ -825,7 +825,7 @@ private fun SimPickerDialog(
                         .align(Alignment.End)
                         .padding(horizontal = 12.dp)
                 ) {
-                    Text(stringResource(R.string.action_cancel), color = Tosse PayTextLightGray)
+                    Text(stringResource(R.string.action_cancel), color = TossePayTextLightGray)
                 }
             }
         }

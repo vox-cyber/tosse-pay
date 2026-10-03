@@ -44,17 +44,17 @@ import com.tossepay.app.managers.CallType
 import com.tossepay.app.ui.dialogs.Upi123ProgressDialog
 import com.tossepay.app.ui.dialogs.UssdProgressDialog
 import com.tossepay.app.ui.theme.BlueAccentTheme
-import com.tossepay.app.ui.theme.Tosse PayAccentGreen
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayLightGray
-import com.tossepay.app.ui.theme.Tosse PayMediumGray
-import com.tossepay.app.ui.theme.Tosse PayStatusWarning
-import com.tossepay.app.ui.theme.Tosse PaySurfaceDim
-import com.tossepay.app.ui.theme.Tosse PayTextGray
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.Tosse PayTextPale
-import com.tossepay.app.ui.theme.Tosse PayTheme
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayAccentGreen
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayLightGray
+import com.tossepay.app.ui.theme.TossePayMediumGray
+import com.tossepay.app.ui.theme.TossePayStatusWarning
+import com.tossepay.app.ui.theme.TossePaySurfaceDim
+import com.tossepay.app.ui.theme.TossePayTextGray
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.TossePayTextPale
+import com.tossepay.app.ui.theme.TossePayTheme
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 import kotlinx.coroutines.delay
 
 class TestConfigurationActivity : ComponentActivity() {
@@ -152,8 +152,8 @@ class TestConfigurationActivity : ComponentActivity() {
         // Edge-to-edge: Compose insets are the single source of padding (see MainActivity).
         androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            CompositionLocalProvider(LocalTosse PayAccentTheme provides BlueAccentTheme) {
-                Tosse PayTheme {
+            CompositionLocalProvider(LocalTossePayAccentTheme provides BlueAccentTheme) {
+                TossePayTheme {
                     TestConfigurationScreen(testHelper = testHelper)
                 }
             }
@@ -174,7 +174,7 @@ class TestConfigurationActivity : ComponentActivity() {
 @Composable
 fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
     val context = LocalContext.current
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
 
     // Get test states from helper
     val testStates = testHelper.getTestStates()
@@ -264,14 +264,14 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = stringResource(R.string.testcfg_back),
-                    tint = Tosse PayTextLightGray,
+                    tint = TossePayTextLightGray,
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = stringResource(R.string.testcfg_back_to_setup),
                     fontSize = 14.sp,
-                    color = Tosse PayTextLightGray,
+                    color = TossePayTextLightGray,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -365,7 +365,7 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
                             )
                         } else {
                             Brush.horizontalGradient(
-                                colors = listOf(Tosse PayLightGray, Tosse PayMediumGray)
+                                colors = listOf(TossePayLightGray, TossePayMediumGray)
                             )
                         }
                     )
@@ -386,7 +386,7 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
                     },
                     fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (canContinue) Color.White else Tosse PayTextGray
+                    color = if (canContinue) Color.White else TossePayTextGray
                 )
             }
 
@@ -397,7 +397,7 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
             Text(
                 text = "Skip for now — payments may not work until tests pass",
                 fontSize = 13.sp,
-                color = Tosse PayTextLightGray,
+                color = TossePayTextLightGray,
                 textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -432,9 +432,9 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
         pendingDial?.let { dial ->
             AlertDialog(
                 onDismissRequest = { pendingDial = null },
-                containerColor = Tosse PayDarkGray,
+                containerColor = TossePayDarkGray,
                 titleContentColor = Color.White,
-                textContentColor = Tosse PayTextPale,
+                textContentColor = TossePayTextPale,
                 title = {
                     Text(
                         stringResource(R.string.testcfg_consent_title),
@@ -461,7 +461,7 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
                 },
                 dismissButton = {
                     TextButton(onClick = { pendingDial = null }) {
-                        Text(stringResource(R.string.action_cancel), color = Tosse PayTextLightGray)
+                        Text(stringResource(R.string.action_cancel), color = TossePayTextLightGray)
                     }
                 }
             )
@@ -471,7 +471,7 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
 
 @Composable
 fun TestHeaderCard() {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
 
     Box(
         modifier = Modifier
@@ -573,7 +573,7 @@ fun TestInstructions() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .background(Tosse PaySurfaceDim, RoundedCornerShape(20.dp))
+            .background(TossePaySurfaceDim, RoundedCornerShape(20.dp))
             .padding(16.dp)
     ) {
         Column(
@@ -593,7 +593,7 @@ fun TestInstructions() {
             Text(
                 text = "We'll test both scanning and manual payment methods to ensure everything works smoothly",
                 fontSize = 13.sp,
-                color = Tosse PayTextLightGray,
+                color = TossePayTextLightGray,
                 lineHeight = 19.sp,
                 textAlign = TextAlign.Center
             )
@@ -611,16 +611,16 @@ fun TestButton(
     isUnsupported: Boolean = false,
     onClick: () -> Unit
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
 
     val iconBgColor = when {
-        isUnsupported -> Tosse PayStatusWarning.copy(alpha = 0.15f)
-        isCompleted -> Tosse PayAccentGreen.copy(alpha = 0.15f)
+        isUnsupported -> TossePayStatusWarning.copy(alpha = 0.15f)
+        isCompleted -> TossePayAccentGreen.copy(alpha = 0.15f)
         else -> accent.primary.copy(alpha = 0.15f)
     }
     val iconTint = when {
-        isUnsupported -> Tosse PayStatusWarning
-        isCompleted -> Tosse PayAccentGreen
+        isUnsupported -> TossePayStatusWarning
+        isCompleted -> TossePayAccentGreen
         else -> accent.primary
     }
 
@@ -629,7 +629,7 @@ fun TestButton(
             .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Tosse PaySurfaceDim),
+        colors = CardDefaults.cardColors(containerColor = TossePaySurfaceDim),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
@@ -669,13 +669,13 @@ fun TestButton(
                         text = title,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = if (isUnsupported) Tosse PayStatusWarning else Color.White
+                        color = if (isUnsupported) TossePayStatusWarning else Color.White
                     )
                     Text(
                         text = code,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (isUnsupported) Tosse PayStatusWarning else accent.accent,
+                        color = if (isUnsupported) TossePayStatusWarning else accent.accent,
                         fontFamily = FontFamily.Monospace
                     )
                 }
@@ -685,7 +685,7 @@ fun TestButton(
                 Text(
                     text = description,
                     fontSize = 13.sp,
-                    color = if (isUnsupported) Tosse PayStatusWarning.copy(alpha = 0.8f) else Tosse PayTextLightGray,
+                    color = if (isUnsupported) TossePayStatusWarning.copy(alpha = 0.8f) else TossePayTextLightGray,
                     lineHeight = 18.sp
                 )
             }
@@ -701,14 +701,14 @@ fun TestButton(
                             modifier = Modifier.size(22.dp),
                             color = accent.primary,
                             strokeWidth = 2.5.dp,
-                            trackColor = Tosse PayLightGray
+                            trackColor = TossePayLightGray
                         )
                     }
                     isUnsupported -> {
                         Box(
                             modifier = Modifier
                                 .size(24.dp)
-                                .background(Tosse PayStatusWarning, CircleShape),
+                                .background(TossePayStatusWarning, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -723,7 +723,7 @@ fun TestButton(
                         Box(
                             modifier = Modifier
                                 .size(24.dp)
-                                .background(Tosse PayAccentGreen, CircleShape),
+                                .background(TossePayAccentGreen, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
@@ -738,7 +738,7 @@ fun TestButton(
                         Box(
                             modifier = Modifier
                                 .size(24.dp)
-                                .border(1.5.dp, Tosse PayLightGray, CircleShape)
+                                .border(1.5.dp, TossePayLightGray, CircleShape)
                         )
                     }
                 }

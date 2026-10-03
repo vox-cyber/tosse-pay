@@ -29,13 +29,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tossepay.app.R
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayLightGray
-import com.tossepay.app.ui.theme.Tosse PayMediumGray
-import com.tossepay.app.ui.theme.Tosse PayOutlineGray
-import com.tossepay.app.ui.theme.Tosse PayTextGray
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayLightGray
+import com.tossepay.app.ui.theme.TossePayMediumGray
+import com.tossepay.app.ui.theme.TossePayOutlineGray
+import com.tossepay.app.ui.theme.TossePayTextGray
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -95,7 +95,7 @@ fun ContactPickerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         modifier = Modifier.fillMaxHeight(0.8f),
-        containerColor = Tosse PayDarkGray,
+        containerColor = TossePayDarkGray,
         title = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -112,7 +112,7 @@ fun ContactPickerDialog(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Close",
-                        tint = Tosse PayTextLightGray
+                        tint = TossePayTextLightGray
                     )
                 }
             }
@@ -129,21 +129,21 @@ fun ContactPickerDialog(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                     placeholder = {
-                        Text(stringResource(R.string.contacts_search_hint), color = Tosse PayTextGray)
+                        Text(stringResource(R.string.contacts_search_hint), color = TossePayTextGray)
                     },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = "Search",
-                            tint = Tosse PayTextLightGray
+                            tint = TossePayTextLightGray
                         )
                     },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
                         unfocusedTextColor = Color.White,
-                        focusedBorderColor = Tosse PayOutlineGray,
-                        unfocusedBorderColor = Tosse PayLightGray,
-                        cursorColor = LocalTosse PayAccentTheme.current.accent,
+                        focusedBorderColor = TossePayOutlineGray,
+                        unfocusedBorderColor = TossePayLightGray,
+                        cursorColor = LocalTossePayAccentTheme.current.accent,
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent
                     ),
@@ -158,7 +158,7 @@ fun ContactPickerDialog(
                             .height(300.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator(color = LocalTosse PayAccentTheme.current.accent)
+                        CircularProgressIndicator(color = LocalTossePayAccentTheme.current.accent)
                     }
                 } else if (filteredContacts.isEmpty()) {
                     Box(
@@ -173,7 +173,7 @@ fun ContactPickerDialog(
                             } else {
                                 "No matches for \"$searchQuery\""
                             },
-                            color = Tosse PayTextGray,
+                            color = TossePayTextGray,
                             fontSize = 16.sp
                         )
                     }
@@ -215,7 +215,7 @@ fun ContactItem(
             .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Tosse PayMediumGray
+            containerColor = TossePayMediumGray
         )
     ) {
         Row(
@@ -229,7 +229,7 @@ fun ContactItem(
                 modifier = Modifier
                     .size(40.dp)
                     .background(
-                        color = LocalTosse PayAccentTheme.current.accent.copy(alpha = 0.2f),
+                        color = LocalTossePayAccentTheme.current.accent.copy(alpha = 0.2f),
                         shape = RoundedCornerShape(20.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -237,7 +237,7 @@ fun ContactItem(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
-                    tint = LocalTosse PayAccentTheme.current.accent,
+                    tint = LocalTossePayAccentTheme.current.accent,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -259,7 +259,7 @@ fun ContactItem(
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = contact.phoneNumber,
-                    color = Tosse PayTextLightGray,
+                    color = TossePayTextLightGray,
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

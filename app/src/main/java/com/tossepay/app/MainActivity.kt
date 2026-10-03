@@ -119,17 +119,17 @@ import com.tossepay.app.ui.activities.TransactionHistoryActivity
 import com.tossepay.app.ui.components.TransactionDetailDialog
 import com.tossepay.app.ui.dialogs.ContactPickerDialog
 import com.tossepay.app.ui.theme.BlueAccentTheme
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayLightGray
-import com.tossepay.app.ui.theme.Tosse PayMediumGray
-import com.tossepay.app.ui.theme.Tosse PayOutlineGray
-import com.tossepay.app.ui.theme.Tosse PayStatusError
-import com.tossepay.app.ui.theme.Tosse PaySurfaceDim
-import com.tossepay.app.ui.theme.Tosse PayTextGray
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.Tosse PayTextPale
-import com.tossepay.app.ui.theme.Tosse PayTheme
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayLightGray
+import com.tossepay.app.ui.theme.TossePayMediumGray
+import com.tossepay.app.ui.theme.TossePayOutlineGray
+import com.tossepay.app.ui.theme.TossePayStatusError
+import com.tossepay.app.ui.theme.TossePaySurfaceDim
+import com.tossepay.app.ui.theme.TossePayTextGray
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.TossePayTextPale
+import com.tossepay.app.ui.theme.TossePayTheme
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 import com.tossepay.app.utils.CurrencyFormat
 import com.tossepay.app.utils.findComponentActivity
 import com.tossepay.app.viewmodel.MainUiEvent
@@ -281,8 +281,8 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            CompositionLocalProvider(LocalTosse PayAccentTheme provides BlueAccentTheme) {
-                Tosse PayTheme {
+            CompositionLocalProvider(LocalTossePayAccentTheme provides BlueAccentTheme) {
+                TossePayTheme {
                     MainScreen(
                         onInitiateTransfer = { phoneNumber, amount ->
                             helper.initiateTransfer(phoneNumber, amount)
@@ -384,22 +384,22 @@ private fun ScanQrButton(
                 .shadow(
                     elevation = 12.dp,
                     shape = CircleShape,
-                    ambientColor = LocalTosse PayAccentTheme.current.headerGradientStart.copy(alpha = 0.3f),
-                    spotColor = LocalTosse PayAccentTheme.current.headerGradientEnd.copy(alpha = 0.4f)
+                    ambientColor = LocalTossePayAccentTheme.current.headerGradientStart.copy(alpha = 0.3f),
+                    spotColor = LocalTossePayAccentTheme.current.headerGradientEnd.copy(alpha = 0.4f)
                 )
                 .scale(qrButtonScale)
                 .background(
                     brush = if (isUssdReady) {
                         Brush.linearGradient(
                             colors = listOf(
-                                LocalTosse PayAccentTheme.current.headerGradientStart,
-                                LocalTosse PayAccentTheme.current.headerGradientEnd
+                                LocalTossePayAccentTheme.current.headerGradientStart,
+                                LocalTossePayAccentTheme.current.headerGradientEnd
                             ),
                             start = Offset(0f, 0f),
                             end = Offset(1f, 1f)
                         )
                     } else {
-                        Brush.linearGradient(colors = listOf(Tosse PaySurfaceDim, Tosse PaySurfaceDim))
+                        Brush.linearGradient(colors = listOf(TossePaySurfaceDim, TossePaySurfaceDim))
                     },
                     shape = CircleShape
                 )
@@ -440,7 +440,7 @@ private fun ScanQrButton(
             },
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
-            color = if (isUssdReady) Color.White else Tosse PayTextLightGray,
+            color = if (isUssdReady) Color.White else TossePayTextLightGray,
             textAlign = TextAlign.Center,
             style = TextStyle(
                 shadow = Shadow(Color.Black.copy(alpha = 0.6f), Offset(0f, 1f), 3f)
@@ -508,23 +508,23 @@ private fun PayContactButton(
                 .shadow(
                     elevation = if (isUpi123Ready) 12.dp else 0.dp,
                     shape = RoundedCornerShape(20.dp),
-                    ambientColor = LocalTosse PayAccentTheme.current.headerGradientStart.copy(alpha = 0.3f),
-                    spotColor = LocalTosse PayAccentTheme.current.headerGradientEnd.copy(alpha = 0.4f)
+                    ambientColor = LocalTossePayAccentTheme.current.headerGradientStart.copy(alpha = 0.3f),
+                    spotColor = LocalTossePayAccentTheme.current.headerGradientEnd.copy(alpha = 0.4f)
                 )
                 .scale(payButtonScale)
                 .background(
                     brush = if (isUpi123Ready) {
                         Brush.linearGradient(
                             colors = listOf(
-                                LocalTosse PayAccentTheme.current.headerGradientStart,
-                                LocalTosse PayAccentTheme.current.headerGradientEnd
+                                LocalTossePayAccentTheme.current.headerGradientStart,
+                                LocalTossePayAccentTheme.current.headerGradientEnd
                             ),
                             start = Offset(0f, 0f),
                             end = Offset(1f, 1f)
                         )
                     } else {
                         Brush.linearGradient(
-                            colors = listOf(Tosse PayMediumGray, Tosse PayDarkGray),
+                            colors = listOf(TossePayMediumGray, TossePayDarkGray),
                             start = Offset(0f, 0f),
                             end = Offset(1f, 1f)
                         )
@@ -556,7 +556,7 @@ private fun PayContactButton(
             text = if (isUpi123Ready) "Pay Contact" else "Set up UPI 123 IVR",
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
-            color = if (isUpi123Ready) Color.White else Tosse PayTextLightGray,
+            color = if (isUpi123Ready) Color.White else TossePayTextLightGray,
             textAlign = TextAlign.Center,
             style = TextStyle(
                 shadow = Shadow(Color.Black.copy(alpha = 0.6f), Offset(0f, 1f), 3f)
@@ -755,8 +755,8 @@ fun MainScreen(
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
-                                        LocalTosse PayAccentTheme.current.headerGradientStart,
-                                        LocalTosse PayAccentTheme.current.headerGradientEnd
+                                        LocalTossePayAccentTheme.current.headerGradientStart,
+                                        LocalTossePayAccentTheme.current.headerGradientEnd
                                     )
                                 ),
                                 shape = RoundedCornerShape(20.dp)
@@ -825,7 +825,7 @@ fun MainScreen(
                                     .fillMaxWidth()
                                     .height(80.dp)
                                     .clip(RoundedCornerShape(16.dp))
-                                    .background(LocalTosse PayAccentTheme.current.headerGradientEnd)
+                                    .background(LocalTossePayAccentTheme.current.headerGradientEnd)
                                     .padding(horizontal = 18.dp, vertical = 14.dp)
                             ) {
                                 Row(
@@ -947,7 +947,7 @@ fun MainScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Tosse PaySurfaceDim),
+                    colors = CardDefaults.cardColors(containerColor = TossePaySurfaceDim),
                     elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
@@ -960,14 +960,14 @@ fun MainScreen(
                                 Box(
                                     modifier = Modifier
                                         .size(36.dp)
-                                        .background(Tosse PaySurfaceDim, CircleShape),
+                                        .background(TossePaySurfaceDim, CircleShape),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.History,
                                         contentDescription = "History",
                                         modifier = Modifier.size(20.dp),
-                                        tint = LocalTosse PayAccentTheme.current.headerGradientStart
+                                        tint = LocalTossePayAccentTheme.current.headerGradientStart
                                     )
                                 }
                                 Spacer(modifier = Modifier.width(12.dp))
@@ -981,7 +981,7 @@ fun MainScreen(
                                     Text(
                                         text = "Your latest transactions",
                                         fontSize = 12.sp,
-                                        color = Tosse PayTextLightGray
+                                        color = TossePayTextLightGray
                                     )
                                 }
                             }
@@ -994,7 +994,7 @@ fun MainScreen(
                                 Text(
                                     text = "View All",
                                     fontSize = 12.sp,
-                                    color = LocalTosse PayAccentTheme.current.accent
+                                    color = LocalTossePayAccentTheme.current.accent
                                 )
                             }
                         }
@@ -1011,7 +1011,7 @@ fun MainScreen(
                                 ) {
                                     CircularProgressIndicator(
                                         modifier = Modifier.size(32.dp),
-                                        color = LocalTosse PayAccentTheme.current.headerGradientStart,
+                                        color = LocalTossePayAccentTheme.current.headerGradientStart,
                                         strokeWidth = 3.dp
                                     )
                                     Spacer(modifier = Modifier.height(20.dp))
@@ -1019,7 +1019,7 @@ fun MainScreen(
                                         text = "Loading transactions...",
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Medium,
-                                        color = Tosse PayTextLightGray
+                                        color = TossePayTextLightGray
                                     )
                                 }
                             }
@@ -1041,7 +1041,7 @@ fun MainScreen(
                                     Text(
                                         text = error ?: "Unknown error",
                                         fontSize = 13.sp,
-                                        color = Tosse PayTextLightGray,
+                                        color = TossePayTextLightGray,
                                         textAlign = TextAlign.Center
                                     )
                                     Spacer(modifier = Modifier.height(16.dp))
@@ -1050,7 +1050,7 @@ fun MainScreen(
                                             text = "Retry",
                                             fontSize = 14.sp,
                                             fontWeight = FontWeight.Medium,
-                                            color = LocalTosse PayAccentTheme.current.headerGradientStart
+                                            color = LocalTossePayAccentTheme.current.headerGradientStart
                                         )
                                     }
                                 }
@@ -1066,14 +1066,14 @@ fun MainScreen(
                                     Box(
                                         modifier = Modifier
                                             .size(64.dp)
-                                            .background(Tosse PayMediumGray, CircleShape),
+                                            .background(TossePayMediumGray, CircleShape),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.History,
                                             contentDescription = "No transactions",
                                             modifier = Modifier.size(32.dp),
-                                            tint = Tosse PayTextLightGray
+                                            tint = TossePayTextLightGray
                                         )
                                     }
                                     Spacer(modifier = Modifier.height(20.dp))
@@ -1087,7 +1087,7 @@ fun MainScreen(
                                     Text(
                                         text = "Your payment history will appear here",
                                         fontSize = 13.sp,
-                                        color = Tosse PayTextLightGray,
+                                        color = TossePayTextLightGray,
                                         textAlign = TextAlign.Center
                                     )
                                 }
@@ -1190,7 +1190,7 @@ fun TransactionItem(payment: PaymentDetails, onClick: () -> Unit) {
             .height(90.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Tosse PaySurfaceDim),
+        colors = CardDefaults.cardColors(containerColor = TossePaySurfaceDim),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
@@ -1218,7 +1218,7 @@ fun TransactionItem(payment: PaymentDetails, onClick: () -> Unit) {
                 Text(
                     text = formatDate(payment.timestamp),
                     fontSize = 14.sp,
-                    color = Tosse PayTextPale,
+                    color = TossePayTextPale,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Medium
@@ -1238,7 +1238,7 @@ private fun TransactionItemAmount(amount: Double, status: PaymentStatus) {
     // arrow: this row has no separate status chip (unlike transaction
     // history), so the icon is the only signal here.
     val failed = status == PaymentStatus.FAILED || status == PaymentStatus.CANCELLED
-    val tint = if (failed) Tosse PayStatusError else LocalTosse PayAccentTheme.current.headerGradientStart
+    val tint = if (failed) TossePayStatusError else LocalTossePayAccentTheme.current.headerGradientStart
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -1249,7 +1249,7 @@ private fun TransactionItemAmount(amount: Double, status: PaymentStatus) {
             text = stringResource(R.string.amount_rupees, CurrencyFormat.inr(amount)),
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = LocalTosse PayAccentTheme.current.headerGradientStart,
+            color = LocalTossePayAccentTheme.current.headerGradientStart,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -1291,7 +1291,7 @@ fun PayContactDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = Tosse PayDarkGray,
+        containerColor = TossePayDarkGray,
         title = {
             Text(
                 text = "Pay Contact",
@@ -1306,7 +1306,7 @@ fun PayContactDialog(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = LocalTosse PayAccentTheme.current.accent.copy(alpha = 0.15f)
+                            containerColor = LocalTossePayAccentTheme.current.accent.copy(alpha = 0.15f)
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -1319,13 +1319,13 @@ fun PayContactDialog(
                             Icon(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = null,
-                                tint = LocalTosse PayAccentTheme.current.accent,
+                                tint = LocalTossePayAccentTheme.current.accent,
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "Sending to: $name",
-                                color = LocalTosse PayAccentTheme.current.accent,
+                                color = LocalTossePayAccentTheme.current.accent,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium
                             )
@@ -1347,10 +1347,10 @@ fun PayContactDialog(
                             }
                         },
                         label = {
-                            Text(stringResource(R.string.home_field_mobile_label), color = Tosse PayTextLightGray)
+                            Text(stringResource(R.string.home_field_mobile_label), color = TossePayTextLightGray)
                         },
                         placeholder = {
-                            Text(stringResource(R.string.home_field_mobile_hint), color = Tosse PayTextGray)
+                            Text(stringResource(R.string.home_field_mobile_hint), color = TossePayTextGray)
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
@@ -1358,8 +1358,8 @@ fun PayContactDialog(
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White,
-                            focusedBorderColor = Tosse PayOutlineGray,
-                            unfocusedBorderColor = Tosse PayLightGray,
+                            focusedBorderColor = TossePayOutlineGray,
+                            unfocusedBorderColor = TossePayLightGray,
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent
                         )
@@ -1386,14 +1386,14 @@ fun PayContactDialog(
                             .padding(top = 8.dp)
                             .size(48.dp)
                             .background(
-                                color = LocalTosse PayAccentTheme.current.accent.copy(alpha = 0.2f),
+                                color = LocalTossePayAccentTheme.current.accent.copy(alpha = 0.2f),
                                 shape = RoundedCornerShape(8.dp)
                             )
                     ) {
                         Icon(
                             imageVector = Icons.Default.PermContactCalendar,
                             contentDescription = "Select Contact",
-                            tint = LocalTosse PayAccentTheme.current.accent
+                            tint = LocalTossePayAccentTheme.current.accent
                         )
                     }
                 }
@@ -1406,10 +1406,10 @@ fun PayContactDialog(
                         }
                     },
                     label = {
-                        Text(stringResource(R.string.home_field_amount_label), color = Tosse PayTextLightGray)
+                        Text(stringResource(R.string.home_field_amount_label), color = TossePayTextLightGray)
                     },
                     placeholder = {
-                        Text(stringResource(R.string.home_field_amount_hint), color = Tosse PayTextGray)
+                        Text(stringResource(R.string.home_field_amount_hint), color = TossePayTextGray)
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
@@ -1418,8 +1418,8 @@ fun PayContactDialog(
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
                         unfocusedTextColor = Color.White,
-                        focusedBorderColor = if (isOverCap) Tosse PayStatusError else Tosse PayOutlineGray,
-                        unfocusedBorderColor = if (isOverCap) Tosse PayStatusError else Tosse PayLightGray,
+                        focusedBorderColor = if (isOverCap) TossePayStatusError else TossePayOutlineGray,
+                        unfocusedBorderColor = if (isOverCap) TossePayStatusError else TossePayLightGray,
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent
                     )
@@ -1431,7 +1431,7 @@ fun PayContactDialog(
                 if (isOverCap) {
                     Text(
                         text = Upi123CallStringBuilder.Reason.AMOUNT_ABOVE_CAP.messageFor(context),
-                        color = Tosse PayStatusError,
+                        color = TossePayStatusError,
                         fontSize = 12.sp,
                         lineHeight = 16.sp
                     )
@@ -1448,16 +1448,16 @@ fun PayContactDialog(
                 Text(
                     stringResource(R.string.action_transfer),
                     color = if (canTransfer) {
-                        LocalTosse PayAccentTheme.current.accent
+                        LocalTossePayAccentTheme.current.accent
                     } else {
-                        Tosse PayTextGray
+                        TossePayTextGray
                     }
                 )
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.action_cancel), color = Tosse PayTextLightGray)
+                Text(stringResource(R.string.action_cancel), color = TossePayTextLightGray)
             }
         }
     )
@@ -1497,7 +1497,7 @@ fun PermissionExplanationDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = Tosse PayDarkGray,
+        containerColor = TossePayDarkGray,
         title = {
             Text(
                 text = title,
@@ -1510,7 +1510,7 @@ fun PermissionExplanationDialog(
             Text(
                 text = message,
                 fontSize = 14.sp,
-                color = Tosse PayTextPale,
+                color = TossePayTextPale,
                 lineHeight = 20.sp
             )
         },
@@ -1518,7 +1518,7 @@ fun PermissionExplanationDialog(
             TextButton(
                 onClick = onConfirm,
                 colors = ButtonDefaults.textButtonColors(
-                    contentColor = LocalTosse PayAccentTheme.current.accent
+                    contentColor = LocalTossePayAccentTheme.current.accent
                 )
             ) {
                 Text(confirmButtonText)
@@ -1526,7 +1526,7 @@ fun PermissionExplanationDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.action_not_now), color = Tosse PayTextLightGray)
+                Text(stringResource(R.string.action_not_now), color = TossePayTextLightGray)
             }
         }
     )

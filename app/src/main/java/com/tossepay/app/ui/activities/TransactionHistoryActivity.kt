@@ -41,12 +41,12 @@ import com.tossepay.app.R
 import com.tossepay.app.data.Transaction
 import com.tossepay.app.ui.components.TransactionDetailDialog
 import com.tossepay.app.ui.theme.BlueAccentTheme
-import com.tossepay.app.ui.theme.Tosse PayDarkGray
-import com.tossepay.app.ui.theme.Tosse PayMediumGray
-import com.tossepay.app.ui.theme.Tosse PayStatusError
-import com.tossepay.app.ui.theme.Tosse PayTextLightGray
-import com.tossepay.app.ui.theme.Tosse PayTheme
-import com.tossepay.app.ui.theme.LocalTosse PayAccentTheme
+import com.tossepay.app.ui.theme.TossePayDarkGray
+import com.tossepay.app.ui.theme.TossePayMediumGray
+import com.tossepay.app.ui.theme.TossePayStatusError
+import com.tossepay.app.ui.theme.TossePayTextLightGray
+import com.tossepay.app.ui.theme.TossePayTheme
+import com.tossepay.app.ui.theme.LocalTossePayAccentTheme
 import com.tossepay.app.ui.theme.statusColor
 import com.tossepay.app.utils.CurrencyFormat
 import com.tossepay.app.viewmodel.TransactionViewModel
@@ -85,8 +85,8 @@ class TransactionHistoryActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_TossePay)
         setContent {
-            CompositionLocalProvider(LocalTosse PayAccentTheme provides BlueAccentTheme) {
-                Tosse PayTheme {
+            CompositionLocalProvider(LocalTossePayAccentTheme provides BlueAccentTheme) {
+                TossePayTheme {
                     TransactionHistoryScreen(
                         onBackClick = { finish() }
                     )
@@ -153,7 +153,7 @@ fun TransactionHistoryScreen(
         grouped
     }
 
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -268,7 +268,7 @@ fun TransactionHistoryScreen(
                         placeholder = {
                             Text(
                                 stringResource(R.string.history_search_placeholder),
-                                color = Tosse PayTextLightGray,
+                                color = TossePayTextLightGray,
                                 fontSize = 14.sp
                             )
                         },
@@ -280,7 +280,7 @@ fun TransactionHistoryScreen(
                             Icon(
                                 imageVector = Icons.Default.Search,
                                 contentDescription = null,
-                                tint = Tosse PayTextLightGray,
+                                tint = TossePayTextLightGray,
                                 modifier = Modifier.size(20.dp)
                             )
                         },
@@ -290,7 +290,7 @@ fun TransactionHistoryScreen(
                                     Icon(
                                         imageVector = Icons.Default.Close,
                                         contentDescription = "Clear",
-                                        tint = Tosse PayTextLightGray,
+                                        tint = TossePayTextLightGray,
                                         modifier = Modifier.size(18.dp)
                                     )
                                 }
@@ -301,8 +301,8 @@ fun TransactionHistoryScreen(
                             unfocusedTextColor = Color.White,
                             focusedBorderColor = accent.primary,
                             unfocusedBorderColor = Color.Transparent,
-                            focusedContainerColor = Tosse PayDarkGray,
-                            unfocusedContainerColor = Tosse PayDarkGray
+                            focusedContainerColor = TossePayDarkGray,
+                            unfocusedContainerColor = TossePayDarkGray
                         ),
                         shape = RoundedCornerShape(16.dp),
                         singleLine = true
@@ -337,13 +337,13 @@ fun TransactionHistoryScreen(
                                     modifier = Modifier
                                         .size(64.dp)
                                         .clip(CircleShape)
-                                        .background(Tosse PayMediumGray),
+                                        .background(TossePayMediumGray),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.History,
                                         contentDescription = null,
-                                        tint = Tosse PayStatusError,
+                                        tint = TossePayStatusError,
                                         modifier = Modifier.size(32.dp)
                                     )
                                 }
@@ -378,13 +378,13 @@ fun TransactionHistoryScreen(
                                     modifier = Modifier
                                         .size(64.dp)
                                         .clip(CircleShape)
-                                        .background(Tosse PayMediumGray),
+                                        .background(TossePayMediumGray),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.History,
                                         contentDescription = null,
-                                        tint = Tosse PayTextLightGray,
+                                        tint = TossePayTextLightGray,
                                         modifier = Modifier.size(32.dp)
                                     )
                                 }
@@ -407,7 +407,7 @@ fun TransactionHistoryScreen(
                                         "Transactions will appear here"
                                     },
                                     fontSize = 13.sp,
-                                    color = Tosse PayTextLightGray
+                                    color = TossePayTextLightGray
                                 )
                             }
                         }
@@ -424,7 +424,7 @@ fun TransactionHistoryScreen(
                                         text = dateLabel,
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.SemiBold,
-                                        color = Tosse PayTextLightGray,
+                                        color = TossePayTextLightGray,
                                         letterSpacing = 0.5.sp,
                                         modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                                     )
@@ -443,7 +443,7 @@ fun TransactionHistoryScreen(
                                         HorizontalDivider(
                                             modifier = Modifier.padding(start = 52.dp),
                                             thickness = 0.5.dp,
-                                            color = Tosse PayDarkGray
+                                            color = TossePayDarkGray
                                         )
                                     }
                                 }
@@ -475,7 +475,7 @@ private fun TransactionHistoryItem(
     transaction: Transaction,
     onClick: () -> Unit
 ) {
-    val accent = LocalTosse PayAccentTheme.current
+    val accent = LocalTossePayAccentTheme.current
     val displayName = transaction.recipientName?.takeIf { it.isNotEmpty() }
         ?: transaction.phoneNumber?.takeIf { it.isNotEmpty() }
         ?: "Unknown"
@@ -509,7 +509,7 @@ private fun TransactionHistoryItem(
             Text(
                 text = formatTime(transaction.timestamp),
                 fontSize = 13.sp,
-                color = Tosse PayTextLightGray,
+                color = TossePayTextLightGray,
                 maxLines = 1
             )
         }
@@ -538,7 +538,7 @@ private fun TransactionAvatar(initial: Char) {
         modifier = Modifier
             .size(40.dp)
             .clip(CircleShape)
-            .background(Tosse PayDarkGray),
+            .background(TossePayDarkGray),
         contentAlignment = Alignment.Center
     ) {
         Text(
