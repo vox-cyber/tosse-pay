@@ -15,6 +15,9 @@ import com.tossepay.app.data.TestResultsManager
 import com.tossepay.app.managers.CallManager
 import com.tossepay.app.managers.CallType
 import com.tossepay.app.managers.PermissionManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * Helper class containing all business logic for TestConfigurationActivity
@@ -53,28 +56,36 @@ class TestConfigurationHelper(
     private var ussdProgressMessage = "Initializing..."
     private var showUssdConfigurationOptions = false
 
+    private val _testStates = MutableStateFlow(getTestStates())
+    val testStates: StateFlow<TestStates> = _testStates.asStateFlow()
+
+    fun notifyStateChanged() {
+        _testStates.value = getTestStates()
+    }
+
     /**
      * Interface for UI callbacks
      */
     interface UICallback {
         fun showToast(message: String)
-        fun updateUssdTesting(isTesting: Boolean)
-        fun updateUssdDialog(show: Boolean)
-        fun updateUssdTestCompleted(completed: Boolean)
-        fun updateUpi123Testing(isTesting: Boolean)
-        fun updateUpi123TestCompleted(completed: Boolean)
-        fun updateUpi123Dialog(show: Boolean)
-        fun updateUpi123ConfigurationOptions(show: Boolean)
-        fun updateVoiceTesting(isTesting: Boolean)
-        fun updateVoiceDialog(show: Boolean)
-        fun updateVoiceTestCompleted(completed: Boolean)
-        fun updateCallCompleteButton(show: Boolean)
-        fun updateUssdProgressMessage(message: String)
-        fun updateUssdConfigurationOptions(show: Boolean)
         fun navigateToMain()
 
         /** Launch the phone-permission request (Activity owns the launcher). */
         fun requestPhonePermissions()
+
+        fun updateUssdTesting(isTesting: Boolean) {}
+        fun updateUssdDialog(show: Boolean) {}
+        fun updateUssdTestCompleted(completed: Boolean) {}
+        fun updateUpi123Testing(isTesting: Boolean) {}
+        fun updateUpi123TestCompleted(completed: Boolean) {}
+        fun updateUpi123Dialog(show: Boolean) {}
+        fun updateUpi123ConfigurationOptions(show: Boolean) {}
+        fun updateVoiceTesting(isTesting: Boolean) {}
+        fun updateVoiceDialog(show: Boolean) {}
+        fun updateVoiceTestCompleted(completed: Boolean) {}
+        fun updateCallCompleteButton(show: Boolean) {}
+        fun updateUssdProgressMessage(message: String) {}
+        fun updateUssdConfigurationOptions(show: Boolean) {}
     }
 
     /**
@@ -84,6 +95,13 @@ class TestConfigurationHelper(
         callManager = CallManager(context)
         testResultsManager = TestResultsManager(context)
         permissionManager = PermissionManager(context as Activity)
+
+        val existing = testResultsManager.getTestResults()
+        if (existing != null) {
+            ussdTestCompleted = existing.ussdEnabled
+            upi123TestCompleted = existing.upi123Enabled
+        }
+        notifyStateChanged()
     }
 
     /**
@@ -150,6 +168,7 @@ class TestConfigurationHelper(
                 uiCallback.updateUssdTesting(true)
                 uiCallback.updateUssdDialog(true)
                 uiCallback.updateUssdProgressMessage(ussdProgressMessage)
+                notifyStateChanged()
                 Log.d(TAG, "USSD state set - ussdTesting: $ussdTesting, showUssdDialog: $showUssdDialog")
             }
             CallType.VOICE -> {
@@ -157,6 +176,7 @@ class TestConfigurationHelper(
                 showVoiceDialog = true
                 uiCallback.updateVoiceTesting(true)
                 uiCallback.updateVoiceDialog(true)
+                notifyStateChanged()
             }
             CallType.MANUAL_TRANSFER -> {
                 // Manual transfer testing - similar to voice call
@@ -164,6 +184,7 @@ class TestConfigurationHelper(
                 showVoiceDialog = true
                 uiCallback.updateVoiceTesting(true)
                 uiCallback.updateVoiceDialog(true)
+                notifyStateChanged()
             }
             CallType.UPI123 -> {
                 // UPI123 should use initiateUpi123Test() method instead
@@ -216,6 +237,7 @@ class TestConfigurationHelper(
                     }
                 }
                 currentTestingType = null
+                notifyStateChanged()
             }
         )
     }
@@ -246,6 +268,7 @@ class TestConfigurationHelper(
                 showUssdConfigurationOptions = true
                 uiCallback.updateUssdDialog(false)
                 uiCallback.updateUssdConfigurationOptions(true)
+                notifyStateChanged()
                 Log.d(TAG, "Configuration dialog shown after 25 seconds - showUssdDialog: $showUssdDialog, showUssdConfigurationOptions: $showUssdConfigurationOptions")
             } else {
                 Log.d(TAG, "USSD timeout reached but conditions not met - ussdTesting: $ussdTesting, ussdTestCompleted: $ussdTestCompleted")
@@ -274,6 +297,7 @@ class TestConfigurationHelper(
             SetupHelper.setUserReportedUssdNotWorking(context, true)
             uiCallback.showToast(context.getString(R.string.status_scan_to_pay_disabled))
         }
+        notifyStateChanged()
     }
 
     /**
@@ -291,6 +315,7 @@ class TestConfigurationHelper(
         uiCallback.updateUpi123Testing(false)
         uiCallback.updateUpi123Dialog(false)
         uiCallback.updateUpi123ConfigurationOptions(false)
+        notifyStateChanged()
     }
 
     /**
@@ -319,6 +344,7 @@ class TestConfigurationHelper(
         uiCallback.updateUssdConfigurationOptions(false)
         uiCallback.updateUssdDialog(false)
         uiCallback.updateUssdTesting(false)
+        notifyStateChanged()
     }
 
     /**
@@ -346,6 +372,7 @@ class TestConfigurationHelper(
         uiCallback.updateUpi123ConfigurationOptions(false)
         uiCallback.updateUpi123Dialog(false)
         uiCallback.updateUpi123Testing(false)
+        notifyStateChanged()
     }
 
     /**
@@ -362,6 +389,7 @@ class TestConfigurationHelper(
             showUpi123Dialog = true
             uiCallback.updateUpi123Testing(true)
             uiCallback.updateUpi123Dialog(true)
+            notifyStateChanged()
 
             // Initiate UPI123 call - simple flow
             callManager.initiateCall(
@@ -370,11 +398,12 @@ class TestConfigurationHelper(
                 callType = CallType.UPI123,
                 onCallEnded = { type ->
                     if (type == CallType.UPI123 && upi123Testing) {
-                        Log.d(TAG, "UPI123 call ended - showing configuration dialog after 2 second delay")
+                        Log.d(TAG, "UPI123 call ended - showing configuration dialog after short delay")
 
                         // Stop testing state
                         upi123Testing = false
                         uiCallback.updateUpi123Testing(false)
+                        notifyStateChanged()
 
                         cancelUpi123ConfigDelay()
                         upi123ConfigDelayRunnable = Runnable {
@@ -384,10 +413,11 @@ class TestConfigurationHelper(
                                 showUpi123ConfigurationOptions = true
                                 uiCallback.updateUpi123Dialog(false)
                                 uiCallback.updateUpi123ConfigurationOptions(true)
-                                Log.d(TAG, "UPI123 configuration dialog shown after 2 second delay")
+                                notifyStateChanged()
+                                Log.d(TAG, "UPI123 configuration dialog shown")
                             }
                         }
-                        mainHandler.postDelayed(upi123ConfigDelayRunnable!!, 2000)
+                        mainHandler.postDelayed(upi123ConfigDelayRunnable!!, 1000)
                     }
                 }
             )
@@ -427,6 +457,7 @@ class TestConfigurationHelper(
             .putBoolean("test_configuration_completed", true)
             .apply()
 
+        notifyStateChanged()
         uiCallback.navigateToMain()
     }
 
@@ -443,6 +474,7 @@ class TestConfigurationHelper(
             .putBoolean("test_configuration_completed", true)
             .apply()
 
+        notifyStateChanged()
         uiCallback.navigateToMain()
     }
 

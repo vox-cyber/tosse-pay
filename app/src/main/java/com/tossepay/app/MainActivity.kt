@@ -112,6 +112,7 @@ import com.tossepay.app.data.PaymentDetails
 import com.tossepay.app.data.PaymentStatus
 import com.tossepay.app.data.TestResultsManager
 import com.tossepay.app.helpers.MainActivityHelper
+import com.tossepay.app.helpers.SetupHelper
 import com.tossepay.app.managers.PermissionManager
 import com.tossepay.app.payment.Upi123CallStringBuilder
 import com.tossepay.app.payment.messageFor
@@ -368,6 +369,8 @@ private fun ScanQrButton(
     isUssdReady: Boolean,
     isScanning: Boolean
 ) {
+    val context = LocalContext.current
+    val isUssdAvailable = remember(context) { SetupHelper.isScanToPayUssdAvailable(context) }
     var isQRPressed by remember { mutableStateOf(false) }
     val qrButtonScale by animateFloatAsState(
         targetValue = if (isQRPressed) 0.94f else 1f,
@@ -390,7 +393,7 @@ private fun ScanQrButton(
                 )
                 .scale(qrButtonScale)
                 .background(
-                    brush = if (isUssdReady) {
+                    brush = if (isUssdReady && isUssdAvailable) {
                         Brush.linearGradient(
                             colors = listOf(
                                 LocalTossePayAccentTheme.current.headerGradientStart,
@@ -421,27 +424,29 @@ private fun ScanQrButton(
         ) {
             Icon(
                 imageVector = when {
+                    !isUssdAvailable -> Icons.Default.Lock
                     !isUssdReady -> Icons.Default.Lock
                     isScanning -> Icons.Default.QrCode
                     else -> Icons.Default.QrCodeScanner
                 },
                 contentDescription = stringResource(
-                    if (isUssdReady) R.string.home_scan_qr else R.string.home_setup_ussd
+                    if (isUssdReady && isUssdAvailable) R.string.home_scan_qr else R.string.home_setup_ussd
                 ),
-                tint = if (isUssdReady) Color.White else Color.White.copy(alpha = 0.5f),
+                tint = if (isUssdReady && isUssdAvailable) Color.White else Color.White.copy(alpha = 0.5f),
                 modifier = Modifier.size(32.dp)
             )
         }
 
         Text(
             text = when {
+                !isUssdAvailable -> "Scan to Pay (Unavailable)"
                 !isUssdReady -> stringResource(R.string.home_setup_ussd)
                 isScanning -> stringResource(R.string.home_scan_opening)
                 else -> stringResource(R.string.home_scan_qr)
             },
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
-            color = if (isUssdReady) Color.White else TossePayTextLightGray,
+            color = if (isUssdReady && isUssdAvailable) Color.White else TossePayTextLightGray,
             textAlign = TextAlign.Center,
             style = TextStyle(
                 shadow = Shadow(Color.Black.copy(alpha = 0.6f), Offset(0f, 1f), 3f)
@@ -907,6 +912,11 @@ fun MainScreen(
                             context, Manifest.permission.RECEIVE_SMS
                         ) == PackageManager.PERMISSION_GRANTED
                         when {
+                            !SetupHelper.isScanToPayUssdAvailable(context) -> {
+                                val msg = SetupHelper.getScanToPayBlockedMessage(context)
+                                    ?: "Scan to pay is not available on this SIM. Please use Pay Contact."
+                                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                            }
                             // *99# not verified yet — the button is in its
                             // "Set up *99#" state; take the user to the test
                             // screen rather than opening a scanner whose

@@ -54,13 +54,26 @@ object PaymentResultNotifier {
             val text = listOf("₹${CurrencyFormat.inr(amount)}", bank)
                 .filter { it.length > 1 }.joinToString(" — ")
 
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+            val bundle = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                android.app.ActivityOptions.makeBasic().apply {
+                    setPendingIntentBackgroundActivityStartMode(
+                        android.app.ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
+                    )
+                }.toBundle()
+            } else {
+                null
+            }
+
             val contentIntent = PendingIntent.getActivity(
                 context,
                 // Distinct request code per payment so receipts don't overwrite
                 // each other's intents.
                 (resultIntent.getStringExtra("transaction_id") ?: "").hashCode(),
                 resultIntent,
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                bundle
             )
 
             val notification = android.app.Notification.Builder(context, CHANNEL_ID)

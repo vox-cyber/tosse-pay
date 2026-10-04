@@ -537,9 +537,10 @@ class CallOverlayService : Service() {
         if (overlayView != null) {
             try {
                 windowManager?.removeView(overlayView)
-                overlayView = null
             } catch (e: Exception) {
                 Log.e(TAG, "Error removing existing overlay: ${e.message}")
+            } finally {
+                overlayView = null
             }
         }
 
@@ -955,14 +956,18 @@ class CallOverlayService : Service() {
             Log.d(TAG, "Hiding system overlay")
 
             // Remove the overlay view from window manager
-            windowManager?.removeView(overlayView)
-            overlayView = null
-            isOverlayActive = false
-            isOverlayShowing = false
-
-            Log.d(TAG, "System overlay hidden successfully")
+            try {
+                windowManager?.removeView(overlayView)
+                Log.d(TAG, "System overlay hidden successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to hide system overlay: ${e.message}")
+            } finally {
+                overlayView = null
+                isOverlayActive = false
+                isOverlayShowing = false
+            }
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to hide system overlay: ${e.message}")
+            Log.e(TAG, "Unexpected error hiding system overlay: ${e.message}")
         }
     }
 

@@ -10,17 +10,23 @@ import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.net.Uri
 import android.telecom.TelecomManager
-import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import com.tossepay.app.R
+import com.tossepay.app.TossePayApplication
 import com.tossepay.app.constants.AppConstants
 import com.tossepay.app.constants.PermissionConstants
 import com.tossepay.app.payment.Upi123CallStringBuilder
 import com.tossepay.app.payment.messageFor
+import com.tossepay.app.telephony.CallStateCoordinator
+import com.tossepay.app.telephony.DeviceCallState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 enum class CallType {
@@ -36,6 +42,11 @@ class CallManager(private val context: Context) {
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
+    private val coordinator: CallStateCoordinator by lazy {
+        TossePayApplication.from(context)?.callStateCoordinator ?: CallStateCoordinator(context.applicationContext)
+    }
+    private var callTrackingJob: Job? = null
+
     private var originalCallVolume: Int = 0
     private var previousAudioMode: Int = AudioManager.MODE_NORMAL
     private var isAudioMuted = false
@@ -47,13 +58,11 @@ class CallManager(private val context: Context) {
     private var currentCallType: CallType? = null
     private var onCallEndedCallback: ((CallType) -> Unit)? = null
     private var onUssdSessionComplete: (() -> Unit)? = null
-    private var phoneStateListener: PhoneStateListener? = null
 
     // Synchronization objects for thread safety
     private val audioLock = Any()
     private val callStateLock = Any()
     private val callbackLock = Any()
-    private val listenerLock = Any()
 
     private val isUSSDDialPending = AtomicBoolean(false)
 
@@ -111,7 +120,7 @@ class CallManager(private val context: Context) {
 
         // Handle USSD calls using ACTION_CALL (simplified)
         if (callType == CallType.USSD) {
-            handleUSSDCall(phoneNumber, onUssdComplete)
+            handleUSSDCall(phoneNumber, onUssdComplete ?: { onCallEnded(CallType.USSD) })
             return
         }
 
@@ -122,46 +131,43 @@ class CallManager(private val context: Context) {
             _isCallInProgress.value = true
         }
 
-        // Create and register phone state listener for non-USSD calls
-        synchronized(listenerLock) {
-            phoneStateListener = createPhoneStateListener(onCallEnded)
-            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
+        coordinator.acquire(TAG)
+        callTrackingJob?.cancel()
+        callTrackingJob = CoroutineScope(Dispatchers.Main.immediate).launch {
+            var hasBeenActive = false
+            coordinator.callState.collect { state ->
+                Log.d(TAG, "Observed callState: $state (hasBeenActive=$hasBeenActive)")
+                when (state) {
+                    is DeviceCallState.OffHook, is DeviceCallState.Ringing -> {
+                        hasBeenActive = true
+                    }
+                    is DeviceCallState.Idle -> {
+                        if (hasBeenActive) {
+                            Log.d(TAG, "Call finished: active -> idle")
+                            handleCallEnded()
+                        }
+                    }
+                }
+            }
         }
 
-        // Initiate the call
+        val cleanNumber = phoneNumber.trim().removePrefix("tel:")
         val intent = Intent(Intent.ACTION_CALL).apply {
-            data = Uri.parse("tel:$phoneNumber")
+            data = Uri.parse("tel:$cleanNumber")
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         try {
             context.startActivity(intent)
-            Log.d(TAG, "Call initiated: $callType")
+            Log.d(TAG, "Call initiated: $callType to $cleanNumber")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to initiate call", e)
-            synchronized(callStateLock) {
-                _isCallInProgress.value = false
-                currentCallType = null
-                clearCallbacks()
-            }
-            unregisterPhoneStateListener()
-        }
-    }
-
-    private fun unregisterPhoneStateListener() {
-        synchronized(listenerLock) {
-            try {
-                phoneStateListener?.let { telephonyManager.listen(it, PhoneStateListener.LISTEN_NONE) }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error unregistering phone state listener", e)
-            } finally {
-                phoneStateListener = null
-            }
+            handleCallEnded()
         }
     }
 
     /**
-     * Handle USSD calls using ACTION_CALL (simplified)
+     * Handle USSD calls using ACTION_CALL
      */
     private fun handleUSSDCall(ussdCode: String, onUssdComplete: (() -> Unit)?) {
         // Prevent double-dial at the call-manager level (atomic check-and-set)
@@ -177,25 +183,28 @@ class CallManager(private val context: Context) {
 
         Log.d(TAG, "Starting USSD call: $ussdCode")
 
-        // Create and register phone state listener for USSD calls
-        synchronized(listenerLock) {
-            phoneStateListener = createPhoneStateListener { callType ->
-                if (callType == CallType.USSD) {
-                    isUSSDDialPending.set(false)
-                    synchronized(callStateLock) {
-                        _isCallInProgress.value = false
-                        currentCallType = null
-                        getUssdSessionCompleteCallback()?.invoke()
-                        clearCallbacks()
+        coordinator.acquire("${TAG}_USSD")
+        callTrackingJob?.cancel()
+        callTrackingJob = CoroutineScope(Dispatchers.Main.immediate).launch {
+            var hasBeenActive = false
+            coordinator.callState.collect { state ->
+                when (state) {
+                    is DeviceCallState.OffHook, is DeviceCallState.Ringing -> {
+                        hasBeenActive = true
+                    }
+                    is DeviceCallState.Idle -> {
+                        if (hasBeenActive) {
+                            Log.d(TAG, "USSD call active -> idle")
+                            isUSSDDialPending.set(false)
+                            handleCallEnded()
+                        }
                     }
                 }
             }
-            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
         }
 
-        // Initiate the USSD call using ACTION_CALL
-        // URL encode the USSD code to preserve special characters like #
-        val encodedUssdCode = Uri.encode(ussdCode)
+        val cleanCode = ussdCode.trim().removePrefix("tel:")
+        val encodedUssdCode = Uri.encode(cleanCode)
         val intent = Intent(Intent.ACTION_CALL).apply {
             data = Uri.parse("tel:$encodedUssdCode")
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -203,79 +212,42 @@ class CallManager(private val context: Context) {
 
         try {
             context.startActivity(intent)
-            Log.d(TAG, "USSD call initiated: $ussdCode")
+            Log.d(TAG, "USSD call initiated: $cleanCode")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to initiate USSD call", e)
             isUSSDDialPending.set(false)
-            synchronized(callStateLock) {
-                _isCallInProgress.value = false
-                currentCallType = null
-                getUssdSessionCompleteCallback()?.invoke()
-                clearCallbacks()
-            }
-            unregisterPhoneStateListener()
+            handleCallEnded()
         }
     }
 
-    /**
-     * Creates phone state listener for non-USSD calls
-     */
-    private fun createPhoneStateListener(onCallEnded: (CallType) -> Unit): PhoneStateListener {
-        return object : PhoneStateListener() {
-            @Deprecated("Deprecated in Java")
-            override fun onCallStateChanged(state: Int, phoneNumber: String?) {
-                val stateName = when (state) {
-                    TelephonyManager.CALL_STATE_IDLE -> "IDLE"
-                    TelephonyManager.CALL_STATE_RINGING -> "RINGING"
-                    TelephonyManager.CALL_STATE_OFFHOOK -> "OFFHOOK"
-                    else -> "UNKNOWN($state)"
-                }
-                Log.d(TAG, "Call State: $stateName")
-
-                when (state) {
-                    TelephonyManager.CALL_STATE_IDLE -> {
-                        if (_isCallInProgress.value) {
-                            // Call ended
-                            synchronized(callStateLock) {
-                                _isCallInProgress.value = false
-                                currentCallType?.let { callType ->
-                                    getCallEndedCallback()?.invoke(callType)
-                                }
-                                currentCallType = null
-                                clearCallbacks()
-                            }
-                        }
-                    }
-                    TelephonyManager.CALL_STATE_OFFHOOK -> {
-                        if (!_isCallInProgress.value) {
-                            _isCallInProgress.value = true
-                        }
-                    }
-                    TelephonyManager.CALL_STATE_RINGING -> {
-                        // Call is ringing
-                    }
-                }
-            }
+    private fun handleCallEnded() {
+        callTrackingJob?.cancel()
+        callTrackingJob = null
+        try {
+            coordinator.release(TAG)
+        } catch (e: Exception) {
+            Log.w(TAG, "Error releasing coordinator: ${e.message}")
         }
+        val type: CallType?
+        val endedCallback: ((CallType) -> Unit)?
+        val ussdCallback: (() -> Unit)?
+        synchronized(callStateLock) {
+            type = currentCallType
+            endedCallback = getCallEndedCallback()
+            ussdCallback = getUssdSessionCompleteCallback()
+            _isCallInProgress.value = false
+            currentCallType = null
+            clearCallbacks()
+        }
+        type?.let { endedCallback?.invoke(it) }
+        ussdCallback?.invoke()
     }
 
     /**
      * Ends current call
      */
     fun endCall() {
-        synchronized(callStateLock) {
-            _isCallInProgress.value = false
-            currentCallType = null
-            clearCallbacks()
-        }
-
-        // Unregister phone state listener
-        synchronized(listenerLock) {
-            phoneStateListener?.let { listener ->
-                telephonyManager.listen(listener, PhoneStateListener.LISTEN_NONE)
-            }
-            phoneStateListener = null
-        }
+        handleCallEnded()
     }
 
     /**
@@ -626,29 +598,7 @@ class CallManager(private val context: Context) {
             }
         }
 
-        synchronized(callStateLock) {
-            try {
-                // Clear all callbacks and state
-                clearCallbacks()
-                currentCallType = null
-                _isCallInProgress.value = false
-            } catch (e: Exception) {
-                Log.e(TAG, "Error during state cleanup", e)
-            }
-        }
-
-        // Unregister phone state listener
-        synchronized(listenerLock) {
-            try {
-                phoneStateListener?.let { listener ->
-                    telephonyManager.listen(listener, PhoneStateListener.LISTEN_NONE)
-                }
-                phoneStateListener = null
-            } catch (e: Exception) {
-                Log.e(TAG, "Error unregistering phone state listener", e)
-            }
-        }
-
+        handleCallEnded()
         Log.d(TAG, "CallManager cleanup completed")
     }
 

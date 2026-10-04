@@ -81,58 +81,6 @@ class TestConfigurationActivity : ComponentActivity() {
                     }
                 }
 
-                override fun updateUssdTesting(isTesting: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUssdDialog(show: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUssdTestCompleted(completed: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUpi123Testing(isTesting: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUpi123TestCompleted(completed: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUpi123Dialog(show: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUpi123ConfigurationOptions(show: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateVoiceTesting(isTesting: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateVoiceDialog(show: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateVoiceTestCompleted(completed: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateCallCompleteButton(show: Boolean) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUssdProgressMessage(message: String) {
-                    // State will be managed by the composable
-                }
-
-                override fun updateUssdConfigurationOptions(show: Boolean) {
-                    // State will be managed by the composable
-                }
-
                 override fun navigateToMain() {
                     val intent = Intent(this@TestConfigurationActivity, MainActivity::class.java)
                     startActivity(intent)
@@ -176,62 +124,8 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
     val context = LocalContext.current
     val accent = LocalTossePayAccentTheme.current
 
-    // Get test states from helper
-    val testStates = testHelper.getTestStates()
-    var ussdTestCompleted by remember { mutableStateOf(testStates.ussdTestCompleted) }
-    var upi123TestCompleted by remember { mutableStateOf(testStates.upi123TestCompleted) }
-    var ussdTesting by remember { mutableStateOf(testStates.ussdTesting) }
-    var upi123Testing by remember { mutableStateOf(testStates.upi123Testing) }
-    // Holds the pending real-call dial action until the user consents (a test
-    // dial places a real *99#/UPI 123 call that may incur carrier charges).
+    val testStates by testHelper.testStates.collectAsState()
     var pendingDial by remember { mutableStateOf<(() -> Unit)?>(null) }
-    var showUssdDialog by remember { mutableStateOf(testStates.showUssdDialog) }
-    var showUpi123Dialog by remember { mutableStateOf(testStates.showUpi123Dialog) }
-    var showUssdConfigurationOptions by remember { mutableStateOf(testStates.showUssdConfigurationOptions) }
-    var showUpi123ConfigurationOptions by remember { mutableStateOf(testStates.showUpi123ConfigurationOptions) }
-    var ussdProgressMessage by remember { mutableStateOf(testStates.ussdProgressMessage) }
-    var showCallCompleteButton by remember { mutableStateOf(testStates.showCallCompleteButton) }
-
-    // Load existing test results
-    LaunchedEffect(Unit) {
-        val existingResults = testHelper.getTestResults()
-        if (existingResults != null) {
-            ussdTestCompleted = existingResults.ussdEnabled
-            upi123TestCompleted = existingResults.upi123Enabled
-        }
-    }
-
-    // Update states when helper states change
-    LaunchedEffect(testStates) {
-        ussdTestCompleted = testStates.ussdTestCompleted
-        upi123TestCompleted = testStates.upi123TestCompleted
-        ussdTesting = testStates.ussdTesting
-        upi123Testing = testStates.upi123Testing
-        showUssdDialog = testStates.showUssdDialog
-        showUpi123Dialog = testStates.showUpi123Dialog
-        showUssdConfigurationOptions = testStates.showUssdConfigurationOptions
-        showUpi123ConfigurationOptions = testStates.showUpi123ConfigurationOptions
-        ussdProgressMessage = testStates.ussdProgressMessage
-        showCallCompleteButton = testStates.showCallCompleteButton
-    }
-
-    // Add a periodic state check to ensure UI updates
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(100) // Check every 100ms
-            val currentStates = testHelper.getTestStates()
-            ussdTestCompleted = currentStates.ussdTestCompleted
-            upi123TestCompleted = currentStates.upi123TestCompleted
-            ussdTesting = currentStates.ussdTesting
-            upi123Testing = currentStates.upi123Testing
-            showUssdDialog = currentStates.showUssdDialog
-            showUpi123Dialog = currentStates.showUpi123Dialog
-            showUssdConfigurationOptions = currentStates.showUssdConfigurationOptions
-            showUpi123ConfigurationOptions = currentStates.showUpi123ConfigurationOptions
-            ussdProgressMessage = currentStates.ussdProgressMessage
-            showCallCompleteButton = currentStates.showCallCompleteButton
-        }
-    }
 
     Box(
         modifier = Modifier
@@ -306,8 +200,8 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
                         userReportedUssdIssue -> stringResource(R.string.testcfg_ussd_reported_issue)
                         else -> stringResource(R.string.testcfg_enable_scan_payments)
                     },
-                    isCompleted = ussdTestCompleted || isJioSim || userReportedUssdIssue,
-                    isTesting = ussdTesting,
+                    isCompleted = testStates.ussdTestCompleted || isJioSim || userReportedUssdIssue,
+                    isTesting = testStates.ussdTesting,
                     isUnsupported = isJioSim,
                     onClick = {
                         if (isJioSim) {
@@ -316,12 +210,10 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
                                 context.getString(R.string.testcfg_jio_no_ussd),
                                 Toast.LENGTH_LONG
                             ).show()
-                        } else if (!ussdTestCompleted && !ussdTesting) {
+                        } else if (!testStates.ussdTestCompleted && !testStates.ussdTesting) {
                             // Ask before placing a real *99# call. The consent
-                            // dialog runs this action on confirm; ussdTesting is
-                            // flipped there to guard against a double-dial.
+                            // dialog runs this action on confirm.
                             pendingDial = {
-                                ussdTesting = true
                                 testHelper.initiateCall(CallType.USSD)
                             }
                         }
@@ -333,12 +225,11 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
                     title = stringResource(R.string.testcfg_set_up),
                     code = "UPI123",
                     description = stringResource(R.string.testcfg_enable_manual_payments),
-                    isCompleted = upi123TestCompleted,
-                    isTesting = upi123Testing,
+                    isCompleted = testStates.upi123TestCompleted,
+                    isTesting = testStates.upi123Testing,
                     onClick = {
-                        if (!upi123TestCompleted && !upi123Testing) {
+                        if (!testStates.upi123TestCompleted && !testStates.upi123Testing) {
                             pendingDial = {
-                                upi123Testing = true
                                 testHelper.initiateUpi123Test()
                             }
                         }
@@ -410,9 +301,9 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
 
         // USSD Progress Dialog
         UssdProgressDialog(
-            isVisible = showUssdDialog || showUssdConfigurationOptions,
-            progressMessage = ussdProgressMessage,
-            showConfigurationOptions = showUssdConfigurationOptions,
+            isVisible = testStates.showUssdDialog || testStates.showUssdConfigurationOptions,
+            progressMessage = testStates.ussdProgressMessage,
+            showConfigurationOptions = testStates.showUssdConfigurationOptions,
             onConfigured = { testHelper.handleUssdConfigurationConfirmation(true) },
             onNotConfigured = { testHelper.handleUssdConfigurationConfirmation(false) },
             onDismiss = { testHelper.dismissUssdDialog(fromDoesNotWork = false) },
@@ -421,8 +312,8 @@ fun TestConfigurationScreen(testHelper: TestConfigurationHelper) {
 
         // UPI123 Progress Dialog
         Upi123ProgressDialog(
-            isVisible = showUpi123Dialog || showUpi123ConfigurationOptions,
-            showConfigurationOptions = showUpi123ConfigurationOptions,
+            isVisible = testStates.showUpi123Dialog || testStates.showUpi123ConfigurationOptions,
+            showConfigurationOptions = testStates.showUpi123ConfigurationOptions,
             onConfigured = { testHelper.handleUpi123ConfigurationConfirmation(true) },
             onNotConfigured = { testHelper.handleUpi123ConfigurationConfirmation(false) },
             onDismiss = { testHelper.dismissUpi123Dialog() }
